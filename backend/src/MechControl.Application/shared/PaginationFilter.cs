@@ -1,6 +1,6 @@
 namespace MechControl.Application.shared;
 
-public class PaginationFilter
+public record PaginationFilter
 {
     public int Fetch { get; }
 
@@ -10,7 +10,9 @@ public class PaginationFilter
 
     public const int DefaultOffset = 0;
 
-    public PaginationFilter(int offset = DefaultOffset, int fetch = DefaultFetch)
+    public PaginationFilter(
+        int offset = DefaultOffset, 
+        int fetch = DefaultFetch)
     {
         if (offset < 0)
         {

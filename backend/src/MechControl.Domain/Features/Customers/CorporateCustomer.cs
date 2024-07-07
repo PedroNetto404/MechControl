@@ -1,36 +1,34 @@
 using MechControl.Domain.Features.Customers.ValueObjects;
+using MechControl.Domain.Features.MechShops;
 using MechControl.Domain.Shared.ValueObjects;
 
 namespace MechControl.Domain.Features.Customers;
 
 public sealed class CorporateCustomer : Customer
 {
-    public Cnpj Cnpj { get; private set; } 
-    public bool IsMei { get; private set; } 
-    public string TradeName { get; private set; } 
-    public string CompanyName { get; private set; }
-    
+    public bool IsMei { get; private set; }
+
     public CorporateCustomer(
-        PersonName name,
+        Name name,
         Email email,
         Phone phone,
         Address address,
         Cnpj cnpj,
         bool isMei,
         string tradeName,
-        string companyName) : 
+        string companyName,
+        MechShopId mechShopId) :
             base(
-                name, 
-                email, 
-                phone, 
-                address)
+                name,
+                cnpj,
+                email,
+                phone,
+                address,
+                mechShopId)
     {
-        Cnpj = cnpj;
         IsMei = isMei;
-        TradeName = tradeName;
-        CompanyName = companyName;
     }
-    
+
     protected CorporateCustomer()
     {
     }

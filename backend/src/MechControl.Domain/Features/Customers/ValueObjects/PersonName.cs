@@ -3,7 +3,7 @@ using MechControl.Domain.Core.Primitives.Result;
 
 namespace MechControl.Domain.Features.Customers.ValueObjects;
 
-public record PersonName : ValueObject
+public sealed class Name : ValueObject<Name>
 {
     public const int MinLenght = 10;
 
@@ -15,18 +15,23 @@ public record PersonName : ValueObject
 
     public string Middle => Fullname[(Fullname.IndexOf(' ') + 1)..Fullname.LastIndexOf(' ')];
 
-    private PersonName(string fullname) => Fullname = fullname;
+    private Name(string fullname) => Fullname = fullname;
 
-    public static Result<PersonName> New(string name)
+    public static Result<Name> New(string name)
     {
         if(string.IsNullOrEmpty(name))
-            return Result<PersonName>.Fail(
+            return Result<Name>.Fail(
                 new Error("invalid_customer_name", "Customer name is required"));
 
         if(name.Length < MinLenght)
-            return Result<PersonName>.Fail(
+            return Result<Name>.Fail(
                 new Error("invalid_customer_name", $"Customer name must have at least {MinLenght} characters"));
 
-        return Result<PersonName>.Ok(new PersonName(name));
+        return Result<Name>.Ok(new Name(name));
+    }
+
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Fullname;
     }
 }

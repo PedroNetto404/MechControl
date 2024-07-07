@@ -1,32 +1,30 @@
 ﻿using System.Reflection;
+using MechControl.Domain.Core.Primitives;
 
 namespace MechControl.Domain.Core.Abstractions;
 
-public abstract record StrongId<T> where T : StrongId<T>
+public abstract class StrongId : ValueObject<StrongId>
 {
     protected StrongId(Guid value) => Value = value;
 
-    public Guid Value { get; } 
+    public Guid Value { get; }
 
-    public static T New() => (T)GetConstructor().Invoke([Guid.NewGuid()]);
+    public static K New<K>() where K : StrongId => 
+        (K)GetConstructor(typeof(K)).Invoke([Guid.NewGuid()]);
 
-    public static T From(Guid value) => (T)GetConstructor().Invoke([value]);
-    
-    private static ConstructorInfo GetConstructor()
-    {
-        var constructor = typeof(T).GetConstructor(
+    public static K From<K>(Guid value) where K : StrongId => 
+        (K)GetConstructor(typeof(K)).Invoke([value]);
+
+    private static ConstructorInfo GetConstructor(Type type) => type.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
             [typeof(Guid)],
-            null);
-        
-        if (constructor == null)
-        {
-            throw new InvalidOperationException($"Type {typeof(T)} does not have a private constructor that accepts a Guid.");
-        }
-        
-        return constructor;
-    }
+            null) ?? 
+            throw new InvalidOperationException(
+                $"Type {type.Name} does not have a private constructor that accepts a Guid.");
 
-    public static implicit operator Guid(StrongId<T> id) => id.Value;
+    public sealed override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

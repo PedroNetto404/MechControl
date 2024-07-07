@@ -1,3 +1,4 @@
+using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.Customers;
 using MechControl.Domain.Features.Customers.ValueObjects;
 using MechControl.Domain.Shared.ValueObjects;
@@ -17,13 +18,13 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
             .Property(c => c.Id)
             .HasConversion(
                 customerId => customerId.Value,
-                value => CustomerId.From(value));
+                value => StrongId.From<CustomerId>(value));
 
         builder
             .Property(c => c.Name)
             .HasConversion(
                 name => name.Fullname,
-                value => PersonName.New(value))
+                value => Name.New(value).Value)
             .IsRequired()
             .HasColumnName("full_name");
 
@@ -74,17 +75,17 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
             .HasIndex(c => c.Email)
             .IsUnique();
 
-        builder.Property(c => c.CreatedAt)
+        builder.Property(c => c.CreatedOnUtc)
             .HasColumnName("created_at")
             .IsRequired();
 
-        builder.Property(c => c.UpdatedAt)
+        builder.Property(c => c.ModifiedOnUtc)
             .HasColumnName("updated_at")
             .IsRequired();
 
-        builder.Property(c => c.DeletedAt)
+        builder.Property(c => c.DeletedOnUtc)
             .HasColumnName("deleted_at");
-        builder.HasQueryFilter(c => c.DeletedAt == null);
+        builder.HasQueryFilter(c => c.DeletedOnUtc == null);
 
         builder.Property<Cpf>("Cpf")
             .HasColumnName("cpf")

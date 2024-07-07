@@ -4,9 +4,9 @@ using MechControl.Domain.Core.Primitives.Result;
 
 namespace MechControl.Domain.Shared.ValueObjects;
 
-public record Phone : ValueObject 
+public sealed partial class Phone : ValueObject<Phone>
 {
-    private static readonly Regex Regex = new(@"^\d{11}$", RegexOptions.Compiled);
+    private static readonly Regex Regex = MyRegex();
     public string Value { get; private set; }
 
     public string Ddd => Value[..2];
@@ -30,4 +30,14 @@ public record Phone : ValueObject
     }
 
     public override string ToString() => $"({Ddd}) {Number[..1]} {Number[1..5]}-{Number[5..]}";
+
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
+
+    public static implicit operator string(Phone phone) => phone.Value;
+
+    [GeneratedRegex(@"^\d{11}$", RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
 }

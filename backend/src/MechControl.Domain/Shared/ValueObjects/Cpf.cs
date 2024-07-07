@@ -3,33 +3,38 @@ using MechControl.Domain.Core.Primitives.Result;
 
 namespace MechControl.Domain.Shared.ValueObjects;
 
-public record Cpf : ValueObject
+public sealed class Cpf : Document
 {
-    public string Value { get; private set; }
+    public const int Length = 11;
 
-    private Cpf(string value) => Value = value;
+    private Cpf(string value) : base(value)
+    {
+    }
 
     public static Result<Cpf> New(string value)
     {
-        if (string.IsNullOrEmpty(value))
-            return Result<Cpf>.Fail(
-                new Error("invalid_cpf", "Cpf is required"));
-
-        if (value.Length != 11)
-            return Result<Cpf>.Fail(
-                new Error("invalid_cpf", "Cpf must have 11 characters"));
-
-
-        if (!IsValid(value))
-            return Result<Cpf>.Fail(
-                new Error("invalid_cpf", "Cpf is invalid"));
-
-        return Result<Cpf>.Ok(new Cpf(value));
+        try
+        {
+            var cpf = new Cpf(value);
+            return Result<Cpf>.Ok(cpf);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<Cpf>.Fail(new Error("invalid_cpf", ex.Message));
+        }
+        catch
+        {
+            return Result<Cpf>.Fail(new Error("invalid_cpf", "Invalid CPF"));
+        }
     }
 
-    private static bool IsValid(string value)
+    public override IEnumerable<object> GetEqualityComponents()
     {
-        //TODO: Implement CPF validation logic
-        return true;
+        yield return Value;
+    }
+
+    public override bool IsValidFormat(string value)
+    {
+        throw new NotImplementedException();
     }
 }

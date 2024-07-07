@@ -13,6 +13,8 @@ namespace MechControl.Domain.Core.Abstractions
         /// <summary>
         /// Gets the modified on date and time in UTC format.
         /// </summary>
-        DateTime? ModifiedOnUtc { get; }
+        DateTime ModifiedOnUtc { get; }
+
+        DateTime? DeletedOnUtc { get; }
     }
 }

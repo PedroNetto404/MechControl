@@ -3,32 +3,34 @@ using MechControl.Domain.Core.Primitives.Result;
 
 namespace MechControl.Domain.Shared.ValueObjects;
 
-public record Cnpj : ValueObject
+public sealed class Cnpj : Document
 {
-    public string Value { get; private set; }
 
-    private Cnpj(string value) => Value = value;
+    public const int Length = 14;
+    private Cnpj(string value) : base(value)
+    {
+    }
+
 
     public static Result<Cnpj> New(string value)
     {
-        if (string.IsNullOrEmpty(value))
-            return Result<Cnpj>.Fail(
-                new Error("invalid_cnpj", "Cnpj is required"));
-
-        if (value.Length != 14)
-            return Result<Cnpj>.Fail(
-                new Error("invalid_cnpj", "Cnpj must have 14 characters"));
-
-        if (!IsValid(value))
-            return Result<Cnpj>.Fail(
-                new Error("invalid_cnpj", "Cnpj is invalid"));
-
-        return Result<Cnpj>.Ok(new Cnpj(value));
+        try 
+        {
+            var cnpj = new Cnpj(value);
+            return Result<Cnpj>.Ok(cnpj);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<Cnpj>.Fail(new Error("invalid_cnpj", ex.Message));
+        }
+        catch
+        {
+            return Result<Cnpj>.Fail(new Error("invalid_cnpj", "Invalid CNPJ"));
+        }
     }
 
-    private static bool IsValid(string value)
+    public override bool IsValidFormat(string value)
     {
-        //TODO: Implement CNPJ validation logic
-        return true;
+        throw new NotImplementedException();
     }
 }

@@ -5,21 +5,15 @@ namespace MechControl.Domain.Core.Primitives;
 public abstract class Entity<TId> :
     IEntity<TId>,
     IEquatable<Entity<TId>>
-    where TId : notnull
+    where TId : StrongId
 {
-    public TId Id { get; protected set; }
+    public TId Id { get; protected set; } 
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    protected Entity()
-    {
-    }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-
-    protected Entity(TId id) => Id = id;
+    protected Entity() => Id = StrongId.New<TId>();
 
     public bool Equals(Entity<TId>? other)
     {
-        if (ReferenceEquals(null, other)) return false;
+        if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
         return Id.Equals(other.Id);
     }

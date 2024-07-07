@@ -4,11 +4,9 @@ using MechControl.Domain.Core.Primitives.Result;
 
 namespace MechControl.Domain.Shared.ValueObjects;
 
-public sealed record Email : ValueObject
+public sealed partial class Email : ValueObject<Email>
 {
-    private static readonly Regex EmailRegex = new(
-        "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", 
-        RegexOptions.Compiled);
+    private static readonly Regex EmailRegex = MyRegex();
 
     public string Value { get; private set; }
 
@@ -26,4 +24,16 @@ public sealed record Email : ValueObject
 
         return Result<Email>.Ok(new Email(value));
     }
+
+    public override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
+
+    public override string ToString() => Value;
+
+    public static implicit operator string(Email email) => email.Value;
+
+    [GeneratedRegex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
 }
