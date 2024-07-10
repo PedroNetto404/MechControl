@@ -8,4 +8,7 @@ namespace MechControl.Domain.Core.Errors;
 /// <param name="Code">Error Identifier.</param>
 /// <param name="Message">Error description.</param>
 /// <param name="Feature">Domain feature that originated the error.</param>
-public record DomainError(string Code, string Message, string Feature) : Error(Code, Message);
+public class DomainError(string Code, string Message, string Feature) : Error(Code, Message)
+{
+    public string Feature { get; } = Feature;
+}

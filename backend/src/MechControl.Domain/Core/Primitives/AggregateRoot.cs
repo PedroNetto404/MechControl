@@ -13,7 +13,7 @@ namespace MechControl.Domain.Core.Primitives
         {
         }
 
-        IReadOnlyCollection<IDomainEvent> IAggregateRoot.DomainEvents => _domainEvents;
+        IReadOnlyCollection<IDomainEvent> IAggregateRoot.DomainEvents => [.._domainEvents];
 
 		public void ClearDomainEvents() => _domainEvents.Clear();
 

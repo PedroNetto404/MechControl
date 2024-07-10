@@ -7,9 +7,9 @@ public interface IRepository<TAggregateRoot, TAggregateId>
 	where TAggregateRoot : AggregateRoot<TAggregateId>
 	where TAggregateId : StrongId
 {
-	Task<TAggregateRoot> GetByIdAsync(TAggregateId id, CancellationToken cancellationToken);
-	Task<IList<TAggregateRoot>> ListAsync(ISpecification<TAggregateRoot> specification, CancellationToken cancellationToken);
-	Task<TAggregateRoot> AddAsync(TAggregateRoot entity, CancellationToken cancellationToken);
-	Task<TAggregateRoot> UpdateAsync(TAggregateRoot entity, CancellationToken cancellationToken);
-	Task<TAggregateRoot> DeleteAsync(TAggregateId id, CancellationToken cancellationToken);
+	Task<TAggregateRoot?> GetByIdAsync(TAggregateId id, CancellationToken cancellationToken = default);
+	Task<List<TAggregateRoot>> ListAsync(ISpecification<TAggregateRoot> specification, CancellationToken cancellationToken = default);
+	Task AddAsync(TAggregateRoot aggregate);
+	Task UpdateAsync(TAggregateRoot aggregate);
+	Task DeleteAsync(TAggregateRoot aggregate);
 }

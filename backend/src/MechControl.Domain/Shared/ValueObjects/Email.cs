@@ -15,14 +15,12 @@ public sealed partial class Email : ValueObject<Email>
     public static Result<Email> New(string value)
     {
         if (string.IsNullOrEmpty(value))
-            return Result<Email>.Fail(
-                new Error("invalid_email", "Email is required"));
+            return new Error("invalid_email", "Email is required");
 
         if (!EmailRegex.IsMatch(value))
-            return Result<Email>.Fail(
-                new Error("invalid_email", "Email is invalid"));
+            return new Error("invalid_email", "Email is invalid");
 
-        return Result<Email>.Ok(new Email(value));
+        return Result.Ok(new Email(value));
     }
 
     public override IEnumerable<object> GetEqualityComponents()

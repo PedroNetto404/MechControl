@@ -1,5 +1,4 @@
-using MechControl.Api.Hooks.Attributes;
-using MechControl.Application.Features.Customers;
+using MechControl.Application.Features.Customers.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +8,8 @@ public partial class CustomerController(ISender sender) :
 	Controller(sender)
 {
 	[HttpGet("{id:guid}")]
-	public Task<IActionResult> GetAsync(
-		[FromSession("mechanic_shop_id")] Guid mechanicShopId,
-		Guid id) =>
-		HanldeResultAsync(
-		_sender.Send(new GetCustomerByIdQuery(mechanicShopId, id))
-);
+	public Task<IActionResult> GetAsync(Guid id) =>
+		HandleResultAsync(
+		_sender.Send(new GetCustomerByIdQuery(id))
+  );
 }

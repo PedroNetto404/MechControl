@@ -5,7 +5,7 @@ namespace MechControl.Domain.Core.Abstractions;
 
 public abstract class StrongId : ValueObject<StrongId>
 {
-    protected StrongId(Guid value) => Value = value;
+    protected StrongId(Guid value) => Value = value; 
 
     public Guid Value { get; }
 
@@ -18,7 +18,7 @@ public abstract class StrongId : ValueObject<StrongId>
     private static ConstructorInfo GetConstructor(Type type) => type.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
-            [typeof(Guid)],
+            [typeof(Guid)],  
             null) ?? 
             throw new InvalidOperationException(
                 $"Type {type.Name} does not have a private constructor that accepts a Guid.");

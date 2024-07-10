@@ -3,7 +3,7 @@ namespace MechControl.Domain.Core.Abstractions;
 /// <summary>
 /// Markup interface for aggregate root.
 /// </summary>
-internal interface IAggregateRoot
+public interface IAggregateRoot
 {
 	IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 

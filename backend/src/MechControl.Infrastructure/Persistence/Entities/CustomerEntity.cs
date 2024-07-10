@@ -1,6 +1,7 @@
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.Customers;
 using MechControl.Domain.Features.Customers.ValueObjects;
+using MechControl.Domain.Features.MechShops;
 using MechControl.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,6 +20,13 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
             .HasConversion(
                 customerId => customerId.Value,
                 value => StrongId.From<CustomerId>(value));
+
+        builder.Property(c => c.MechShopId)
+            .HasColumnName("mech_shop_id")
+            .HasConversion(
+                mechShopId => mechShopId.Value,
+                value => StrongId.From<MechShopId>(value))
+            .IsRequired();
 
         builder
             .Property(c => c.Name)
@@ -53,6 +61,17 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
                 .HasColumnName("address_state_code")
                 .IsRequired();
         });
+
+        builder.Property(c => c.Document)
+            .HasColumnName("document")
+            .HasConversion(
+                document => document.Value,
+                value => value.Length == Cpf.Length
+                    ? (Document)Cpf.New(value)
+                    : Cnpj.New(value))
+            .HasMaxLength(Cnpj.Length)
+            .IsRequired();
+        builder.HasIndex(c => c.Document).IsUnique();
 
         builder
             .Property(c => c.Phone)
@@ -93,7 +112,7 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
                 cpf => cpf.Value,
                 value => Cpf.New(value));
 
-        builder.Property<DateTime>("BirthDate")
+        builder.Property<DateOnly>("BirthDate")
             .HasColumnName("birth_date");
 
         builder.Property<Cnpj>("Cnpj")
@@ -104,12 +123,6 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
 
         builder.Property<bool>("IsMei")
             .HasColumnName("is_mei");
-
-        builder.Property<string>("TradeName")
-            .HasColumnName("trade_name");
-
-        builder.Property<string>("CompanyName")
-            .HasColumnName("company_name");
 
         builder.HasDiscriminator<string>("customer_type")
             .HasValue<IndividualCustomer>("individual")

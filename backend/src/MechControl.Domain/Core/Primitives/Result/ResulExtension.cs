@@ -14,13 +14,12 @@ public static class ResultExtensions
     /// <returns>
     /// The success result if the predicate is true and the current result is a success result, otherwise a failure result.
     /// </returns>
-    public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error)
-    {
-        if (result.IsFailure)
-            return result;
-
-        return result.IsSuccess && predicate(result.Value) ? result : Result<T>.Fail(error);
-    }
+    public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error) =>
+        result.IsFailure ?
+            result :
+            result.IsSuccess && predicate(result.Value) ?
+                result :
+                Result.Fail<T>(error);
 
     /// <summary>
     /// Maps the result value to a new value based on the specified mapping function.
@@ -33,7 +32,9 @@ public static class ResultExtensions
     /// The success result with the mapped value if the current result is a success result, otherwise a failure result.
     /// </returns>
     public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> func) =>
-        result.IsSuccess ? Result<TOut>.Ok(func(result.Value)) : Result<TOut>.Fail(result.Error!);
+        result.IsSuccess ?
+            Result.Ok(func(result.Value)) :
+            Result.Fail<TOut>(result.Error!);
 
     /// <summary>
     /// Binds to the result of the function and returns it.
@@ -45,7 +46,9 @@ public static class ResultExtensions
     /// The success result with the bound value if the current result is a success result, otherwise a failure result.
     /// </returns>
     public static async Task<Result> Bind<TIn>(this Result<TIn> result, Func<TIn, Task<Result>> func) =>
-        result.IsSuccess ? await func(result.Value) : Result.Fail(result.Error!);
+        result.IsSuccess ? 
+            await func(result.Value) : 
+            Result.Fail(result.Error!);
 
     /// <summary>
     /// Binds to the result of the function and returns it.
@@ -58,7 +61,9 @@ public static class ResultExtensions
     /// The success result with the bound value if the current result is a success result, otherwise a failure result.
     /// </returns>
     public static async Task<Result<TOut>> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Task<Result<TOut>>> func) =>
-        result.IsSuccess ? await func(result.Value) : Result<TOut>.Fail(result.Error!);
+        result.IsSuccess ? 
+            await func(result.Value) : 
+            Result.Fail<TOut>(result.Error!);
 
     /// <summary>
     /// Matches the success status of the result to the corresponding functions.
@@ -70,12 +75,13 @@ public static class ResultExtensions
     /// <returns>
     /// The result of the on-success function if the result is a success result, otherwise the result of the failure result.
     /// </returns>
-    public static async Task<T> Match<T>(this Task<Result> resultTask, Func<T> onSuccess, Func<Error, T> onFailure)
-    {
-        Result result = await resultTask;
-
-        return result.IsSuccess ? onSuccess() : onFailure(result.Error!);
-    }
+    public static async Task<T> Match<T>(
+        this Task<Result> resultTask, 
+        Func<T> onSuccess, 
+        Func<Error, T> onFailure) =>
+        (await resultTask).IsSuccess ?
+            onSuccess() :
+            onFailure((await resultTask).Error!);
 
     /// <summary>
     /// Matches the success status of the result to the corresponding functions.
@@ -91,10 +97,8 @@ public static class ResultExtensions
     public static async Task<TOut> Match<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
         Func<TIn, TOut> onSuccess,
-        Func<Error, TOut> onFailure)
-    {
-        Result<TIn> result = await resultTask;
-
-        return result.IsSuccess ? onSuccess(result.Value) : onFailure(result.Error!);
-    }
+        Func<Error, TOut> onFailure) =>
+        (await resultTask).IsSuccess ?
+            onSuccess((await resultTask).Value) :
+            onFailure((await resultTask).Error!);
 }

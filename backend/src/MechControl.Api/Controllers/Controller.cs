@@ -10,7 +10,7 @@ public abstract class Controller(ISender sender) : ControllerBase
 {
 	protected readonly ISender _sender = sender;
 
-	protected Task<IActionResult> HanldeResultAsync<TResult>(
+	protected Task<IActionResult> HandleResultAsync<TResult>(
 		Task<Result<TResult>> result) =>
 		result.Match<TResult, IActionResult>(
 			onSuccess: (value) => value switch

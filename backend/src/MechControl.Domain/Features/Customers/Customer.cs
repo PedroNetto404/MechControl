@@ -50,4 +50,6 @@ public abstract class Customer : AggregateRoot<CustomerId>, IAuditableEntity
         Document = document;
         MechShopId = mechShopId;
     }
+
+    public void Delete() => (DeletedOnUtc, ModifiedOnUtc) = (DateTime.UtcNow, DateTime.UtcNow);
 }

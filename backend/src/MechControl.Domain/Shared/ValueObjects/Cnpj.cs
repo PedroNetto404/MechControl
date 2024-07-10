@@ -14,23 +14,12 @@ public sealed class Cnpj : Document
 
     public static Result<Cnpj> New(string value)
     {
-        try 
-        {
-            var cnpj = new Cnpj(value);
-            return Result<Cnpj>.Ok(cnpj);
-        }
-        catch (ArgumentException ex)
-        {
-            return Result<Cnpj>.Fail(new Error("invalid_cnpj", ex.Message));
-        }
-        catch
-        {
-            return Result<Cnpj>.Fail(new Error("invalid_cnpj", "Invalid CNPJ"));
-        }
-    }
+        if (string.IsNullOrEmpty(value))
+            return new Error("invalid_cnpj", "CNPJ is required");
 
-    public override bool IsValidFormat(string value)
-    {
-        throw new NotImplementedException();
+        if (value.Length != Length)
+            return new Error("invalid_cnpj", "CNPJ must have 14 characters");
+
+        return Result.Ok(new Cnpj(value));
     }
 }

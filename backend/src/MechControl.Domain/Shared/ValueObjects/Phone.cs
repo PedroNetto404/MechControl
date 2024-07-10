@@ -19,12 +19,10 @@ public sealed partial class Phone : ValueObject<Phone>
     public static Result<Phone> New(string value)
     {
         if (string.IsNullOrEmpty(value))
-            return Result<Phone>.Fail(
-                new Error("invalid_phone", "Phone is required"));
+            return new Error("invalid_phone", "Phone is required");
 
         if (!Regex.IsMatch(value))
-            return Result<Phone>.Fail(
-                new Error("invalid_phone", "Phone is invalid"));
+            return new Error("invalid_phone", "Phone is invalid");
 
         return Result<Phone>.Ok(new Phone(value));
     }

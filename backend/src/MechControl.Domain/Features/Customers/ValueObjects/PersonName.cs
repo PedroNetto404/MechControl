@@ -20,14 +20,12 @@ public sealed class Name : ValueObject<Name>
     public static Result<Name> New(string name)
     {
         if(string.IsNullOrEmpty(name))
-            return Result<Name>.Fail(
-                new Error("invalid_customer_name", "Customer name is required"));
+            return new Error("invalid_customer_name", "Customer name is required");
 
         if(name.Length < MinLenght)
-            return Result<Name>.Fail(
-                new Error("invalid_customer_name", $"Customer name must have at least {MinLenght} characters"));
+            return new Error("invalid_customer_name", $"Customer name must have at least {MinLenght} characters");
 
-        return Result<Name>.Ok(new Name(name));
+        return Result.Ok(new Name(name));
     }
 
     public override IEnumerable<object> GetEqualityComponents()

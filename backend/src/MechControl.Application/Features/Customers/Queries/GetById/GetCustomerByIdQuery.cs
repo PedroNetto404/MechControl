@@ -1,7 +1,5 @@
 ﻿using MechControl.Application.Abstractions;
 
-namespace MechControl.Application.Features.Customers;
+namespace MechControl.Application.Features.Customers.Queries.GetById;
 
-public record GetCustomerByIdQuery(
-	Guid MechanicShopId,
-	Guid Id) : IQuery<CustomerDto>;
+public record GetCustomerByIdQuery(Guid Id) : IQuery<CustomerDto>;

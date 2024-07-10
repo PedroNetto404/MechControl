@@ -15,8 +15,6 @@ public sealed class CorporateCustomer : Customer
         Address address,
         Cnpj cnpj,
         bool isMei,
-        string tradeName,
-        string companyName,
         MechShopId mechShopId) :
             base(
                 name,

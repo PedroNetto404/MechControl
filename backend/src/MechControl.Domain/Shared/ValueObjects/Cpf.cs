@@ -13,28 +13,17 @@ public sealed class Cpf : Document
 
     public static Result<Cpf> New(string value)
     {
-        try
-        {
-            var cpf = new Cpf(value);
-            return Result<Cpf>.Ok(cpf);
-        }
-        catch (ArgumentException ex)
-        {
-            return Result<Cpf>.Fail(new Error("invalid_cpf", ex.Message));
-        }
-        catch
-        {
-            return Result<Cpf>.Fail(new Error("invalid_cpf", "Invalid CPF"));
-        }
+        if (string.IsNullOrEmpty(value))
+            return new Error("invalid_cpf", "CPF is required");
+
+        if (value.Length != Length)
+            return new Error("invalid_cpf", "CPF must have 11 characters");
+
+        return Result.Ok(new Cpf(value));
     }
 
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
-    }
-
-    public override bool IsValidFormat(string value)
-    {
-        throw new NotImplementedException();
     }
 }

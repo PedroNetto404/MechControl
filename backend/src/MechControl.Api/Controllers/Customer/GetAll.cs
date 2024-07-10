@@ -1,5 +1,6 @@
-﻿using MechControl.Api.Hooks.Attributes;
-using MechControl.Application.Features.Customers.Queries.GetAllCustomers;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using MechControl.Application.Features.Customers.Queries.GetAll;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MechControl.Api.Controllers.Customer;
@@ -7,26 +8,27 @@ namespace MechControl.Api.Controllers.Customer;
 public partial class CustomerController
 {
 
+  public record GetAllCustomersRequest
+  {
+    [Required]
+    [DefaultValue(0)]
+    public required int Offset { get; init; }
+
+    [Required]
+    [DefaultValue(10)]
+    public required int Limit { get; init; }
+
+    [DefaultValue(null)]
+    [FromQuery(Name = "customer_type")]
+    [AllowedValues("individual", "corporate")]
+    public string? CustomerType { get; init; }
+  }
+
   [HttpGet]
-  public Task<IActionResult> GetAsync(
-  [FromSession("mechanic_shop_id")] Guid mechanicShopId,
-  [FromQuery(Name = "offset")] int offset,
-  [FromQuery(Name = "limit")] int limit,
-  [FromQuery(Name = "customer_type")] string customerType,
-  [FromQuery(Name = "name")] string name,
-  [FromQuery(Name = "email")] string email,
-  [FromQuery(Name = "phone")] string phone,
-  [FromQuery(Name = "zip_code")] string zipCode
-  ) =>
-      HanldeResultAsync(
-          _sender.Send(new GetAllCustomersQuery(
-            mechanicShopId,
-            offset,
-            limit,
-            customerType,
-            name,
-            email,
-            phone,
-            zipCode))
-      );
+  public Task<IActionResult> GetAsync(GetAllCustomersRequest request) =>
+    HandleResultAsync(
+        _sender.Send(new GetAllCustomersQuery(
+          request.Offset,
+          request.Limit,
+          request.CustomerType)));
 }

@@ -1,25 +1,23 @@
+using DotNetEnv;
 using MechControl.Api.DependencyInjection;
-using MechControl.Api.Hooks.Binders;
-using MechControl.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using MechControl.Application;
+using MechControl.Infrastructure;
+
+UpEnvironmentVariables();
 
 var builder = WebApplication.CreateBuilder(args);
 {
     var services = builder.Services;
     services.AddEndpointsApiExplorer();
-
-    services.AddControllers(options =>
-    {
-        options.ModelBinderProviders
-               .Insert(0, new FromSessionBinder.Provider());
-    });
+    services.AddControllers();
+    services.AddHttpContextAccessor();
 
     services.AddSwaggerGen();
-    services.AddDbContext<MechControlContext>(opt =>
-        opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-    services.AddAuthServices(builder.Configuration);
+    services
+        .AddJwt(builder.Configuration)
+        .AddApplication()
+        .AddInfrastructure(builder.Configuration);
 }
 
 var app = builder.Build();
@@ -34,3 +32,11 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 await app.RunAsync();
+
+static void UpEnvironmentVariables()
+{
+    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
+    if (env == null) Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+
+    Env.Load(path: $".env-{env ?? "development"}");
+}

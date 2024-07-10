@@ -7,10 +7,17 @@ namespace MechControl.Api.DependencyInjection;
 
 public static class AuthServiceConfig
 {
-	public static void AddAuthServices(this IServiceCollection services, IConfiguration configuration)
+	public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
 	{
-		if (configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() is not { } jwtOptions)
-			throw new InvalidOperationException("JwtOptions not found in configuration.");
+		var jwtOptions = new JwtOptions()
+		{
+			Secret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new InvalidOperationException("JWT_SECRET is not set"),
+			Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new InvalidOperationException("JWT_ISSUER is not set"),
+			Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new InvalidOperationException("JWT_AUDIENCE is not set"),
+			ExpiryMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES") ?? throw new InvalidOperationException("JWT_EXPIRY_MINUTES is not set")),
+		};
+
+		services.AddSingleton(jwtOptions);
 
 		services
 			.AddAuthentication(options =>
@@ -33,5 +40,7 @@ public static class AuthServiceConfig
 								.GetBytes(jwtOptions.Secret)),
 				};
 			});
+
+		return services;
 	}
 }

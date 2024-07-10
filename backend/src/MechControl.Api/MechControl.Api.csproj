@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
@@ -20,5 +21,11 @@
   <ItemGroup>
     <ProjectReference Include="..\MechControl.Application\MechControl.Application.csproj" />
     <ProjectReference Include="..\MechControl.Infrastructure\MechControl.Infrastructure.csproj" />
+  </ItemGroup>
+
+ <ItemGroup>
+    <None Update="..\..\.env*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

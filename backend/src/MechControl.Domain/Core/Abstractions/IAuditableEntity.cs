@@ -16,5 +16,7 @@ namespace MechControl.Domain.Core.Abstractions
         DateTime ModifiedOnUtc { get; }
 
         DateTime? DeletedOnUtc { get; }
+
+        void Delete();
     }
 }

@@ -12,7 +12,7 @@ public record CustomerDto(
 	string? FullName = null,
 	string? FristName = null,
 	string? LastName = null,
-	DateTime? BirthDate = null,
+	DateOnly? BirthDate = null,
 	bool? IsMei = null,
 	string? TradeName = null,
 	string? CompanyName = null
@@ -32,7 +32,7 @@ public record CustomerDto(
 				individualCustomer.Name.Fullname,
 				individualCustomer.Name.First,
 				individualCustomer.Name.Last,
-				individualCustomer.BirthDate,
+				individualCustomer.BirthDate!,
 				null,
 				null,
 				null
@@ -49,9 +49,7 @@ public record CustomerDto(
 				null,
 				null,
 				null,
-				corporateCustomer.IsMei,
-				corporateCustomer.TradeName,
-				corporateCustomer.CompanyName
+				corporateCustomer.IsMei
 			),
 			_ => throw new NotSupportedException()
 		};

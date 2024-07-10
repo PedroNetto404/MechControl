@@ -15,6 +15,7 @@ public record CreateCustomerCommand(
 	string AddressNeighborhood,
 	string AddressCity,
 	string AddressStateCode,
+	string AddressCountryCode,
 	string AddressZipCode,
 	string? AddressComplement,
 	string? AddressReference,
