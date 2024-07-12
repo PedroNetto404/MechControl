@@ -10,16 +10,17 @@ using Microsoft.Extensions.Logging;
 
 namespace MechControl.Infrastructure.Jobs;
 
-public class OutboxMessagesProcessorJob(
+internal sealed class OutboxMessagesProcessorJob(
     MechControlContext context,
-    ISender sender
-) : IBackgroundProcessAsync
+    ISender sender,
+    ILogger<OutboxMessagesProcessorJob> logger
+) 
 {
     private readonly MechControlContext _context = context;
     private readonly ISender _sender = sender;
-    private readonly ILogger<OutboxMessagesProcessorJob> _logger;
+    private readonly ILogger<OutboxMessagesProcessorJob> _logger = logger;
 
-    public async Task ExecuteAsync([NotNull] BackgroundProcessContext context)
+    public async Task ExecuteAsync([NotNull] BackgroundProcessContext _)
     {
         var messages = await _context.OutboxMessages.ToListAsync();
 
@@ -45,18 +46,19 @@ public class OutboxMessagesProcessorJob(
             if(domainEvent is null)
             {
                 _logger.LogError(
-                    "Failed to deserialize event of type {EventType}",
-                    eventInstanceType);
+                    "Failed to deserialize event of type {EventType}/n{EventData}",
+                    eventInstanceType,
+                    message.EventData);
 
                 continue;
             }
 
-            var result = await _sender.Send(domainEvent) as Result;
-            if(result is null)
+            if (await _sender.Send(domainEvent) is not Result result)
             {
                 _logger.LogError(
-                    "Failed to send event of type {EventType}",
-                    eventInstanceType);
+                    "Failed to send event of type {EventType}\n{EventData}",
+                    eventInstanceType,
+                    message.EventData);
 
                 continue;
             }

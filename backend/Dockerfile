@@ -1,35 +1,37 @@
+# Use the SDK image to build the project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
+# Set the working directory
 WORKDIR /src
 
-COPY ["MechControl.Api/MechControl.Api.csproj", "MechControl.Api/"]
+# Copy the project files
+COPY ["src/MechControl.Api/MechControl.Api.csproj", "src/MechControl.Api/"]
+COPY ["src/MechControl.Application/MechControl.Application.csproj", "src/MechControl.Application/"]
+COPY ["src/MechControl.Domain/MechControl.Domain.csproj", "src/MechControl.Domain/"]
+COPY ["src/MechControl.Infrastructure/MechControl.Infrastructure.csproj", "src/MechControl.Infrastructure/"]
 
-COPY ["MechControl.Application/MechControl.Application.csproj", "MechControl.Application/"]
+RUN dotnet restore "src/MechControl.Api/MechControl.Api.csproj"
 
-COPY ["MechControl.Domain/MechControl.Domain.csproj", "MechControl.Domain/"]
-
-COPY ["MechControl.Infrastructure/MechControl.Infrastructure.csproj", "MechControl.Infrastructure/"]
-
-RUN dotnet restore "MechControl.Api/MechControl.Api.csproj"
-
+# Copy the rest of the project files
 COPY . .
 
-WORKDIR "/src/MechControl.Api"
 
-RUN dotnet build "MechControl.Api.csproj" -c Release -o /app/build
+# Build the project
+RUN dotnet build "src/MechControl.Api/MechControl.Api.csproj" -c Release -o /app/build
 
-# Publish
+# Publish the project
 FROM build AS publish
+RUN dotnet publish "src/MechControl.Api/MechControl.Api.csproj" -c Release -o /app/publish
 
-RUN dotnet publish "MechControl.Api.csproj" -c Release -o /app/publish
-
-# Final
+# Use the ASP.NET runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-
 WORKDIR /app
 
+# Copy the published files
 COPY --from=publish /app/publish .
 
+# Set the entry point
 ENTRYPOINT ["dotnet", "MechControl.Api.dll"]
 
-EXPOSE 80
+# Expose the port
+EXPOSE 5678

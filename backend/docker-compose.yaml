@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: mechcontrol-admin
+      POSTGRES_PASSWORD: mechcontrol-admin161829
+      POSTGRES_DB: mechcontrol
     ports:
       - "5432:5432"
     volumes:
@@ -19,17 +19,40 @@ services:
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
-      DB_DATABASE: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      KEYCLOAK_USER: ${DB_USER}
-      KEYCLOAK_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: mechcontrol
+      DB_USER: mechcontrol-admin
+      DB_PASSWORD: mechcontrol-admin161829
+      KEYCLOAK_USER: mechcontrol-admin
+      KEYCLOAK_PASSWORD: mechcontrol-admin161829
     ports:
       - "8080:8080"
     depends_on:
       - postgres
     volumes:
       - keycloak_data:/opt/jboss/keycloak/standalone/data
+    networks:
+      - default
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - default
+
+  mechcontrol-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - keycloak
+      - redis
+    ports:
+      - "5678:5678"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Redis: "redis:6379"
     networks:
       - default
 

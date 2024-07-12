@@ -26,7 +26,7 @@ public partial class CustomerController
 
   [HttpGet]
   public Task<IActionResult> GetAsync(GetAllCustomersRequest request) =>
-    HandleResultAsync(
+    HandleResult(
         _sender.Send(new GetAllCustomersQuery(
           request.Offset,
           request.Limit,

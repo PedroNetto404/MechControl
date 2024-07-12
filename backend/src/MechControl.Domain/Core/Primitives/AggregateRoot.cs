@@ -1,22 +1,22 @@
 using MechControl.Domain.Core.Abstractions;
 
-namespace MechControl.Domain.Core.Primitives
+namespace MechControl.Domain.Core.Primitives;
+
+public abstract class AggregateRoot<TId> :
+	Entity<TId>,
+	IAggregateRoot
+	where TId : StrongId
 {
-	public abstract class AggregateRoot<TId> : 
-		Entity<TId>, 
-		IAggregateRoot
-		where TId : StrongId
+	private readonly List<IDomainEvent> _domainEvents = [];
+
+	protected AggregateRoot()
 	{
-		private readonly List<IDomainEvent> _domainEvents = [];
-
-        protected AggregateRoot() 
-        {
-        }
-
-        IReadOnlyCollection<IDomainEvent> IAggregateRoot.DomainEvents => [.._domainEvents];
-
-		public void ClearDomainEvents() => _domainEvents.Clear();
-
-		void IAggregateRoot.AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 	}
+
+	IReadOnlyCollection<IDomainEvent> IAggregateRoot.DomainEvents => [.. _domainEvents];
+
+	public void ClearDomainEvents() => _domainEvents.Clear();
+
+	public void RaiseDomainEvent(IDomainEvent domainEvent) => 
+		_domainEvents.Add(domainEvent);
 }

@@ -10,7 +10,7 @@ public partial class CustomerController
  
   [HttpPost]
   public Task<IActionResult> CreateAsync([FromBody]CreateCustomerRequest request) =>
-    HandleResultAsync(_sender.Send(new CreateCustomerCommand(
+    HandleResult(_sender.Send(new CreateCustomerCommand(
         request.Name,
         request.Document,
         request.Email,
