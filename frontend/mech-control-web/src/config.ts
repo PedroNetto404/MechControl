@@ -1,10 +1,12 @@
-export const config = {
-  apiUrl: 'http://ui-lib-demo-api.herokuapp.com',
-  authRoles: {
-    sa: ['SA'], // Only Super Admin has access
-    admin: ['SA', 'Admin'], // Only SA & Admin has access
-    editor: ['SA', 'Admin', 'Editor'], // Only SA & Admin & Editor has access
-    user: ['SA', 'Admin', 'Editor', 'User'], // Only SA & Admin & Editor & User has access
-    guest: ['SA', 'Admin', 'Editor', 'User', 'Guest'] // Everyone has access
-  }
+import { getSiteURL } from '@/lib/get-site-url';
+import { LogLevel } from '@/lib/logger';
+
+export interface Config {
+    site: { name: string; description: string; themeColor: string; url: string };
+    logLevel: keyof typeof LogLevel;
 }
+
+export const config: Config = {
+    site: { name: 'CSC Service Car', description: '', themeColor: '#090a0b', url: getSiteURL() },
+    logLevel: (process.env.NEXT_PUBLIC_LOG_LEVEL as keyof typeof LogLevel) ?? LogLevel.ALL,
+};
