@@ -1,28 +1,11 @@
 ﻿using Hangfire;
 using MechControl.Api.Middlewares;
-using MechControl.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
 namespace MechControl.Api.Extensions;
 
 public static class AppBuilderExtensions
 {
-    public static void ApplyMigrations(this IApplicationBuilder app)
-    {
-        using var scope = 
-            app
-                .ApplicationServices
-                .CreateScope();
-        
-        var context = 
-            scope
-                .ServiceProvider
-                .GetRequiredService<MechControlContext>();
 
-        context
-            .Database
-            .Migrate();
-    }
 
     public static void UseCustomExceptionHandler(
         this IApplicationBuilder app) => 

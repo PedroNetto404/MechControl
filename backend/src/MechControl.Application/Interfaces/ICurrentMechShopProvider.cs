@@ -4,5 +4,5 @@ namespace MechControl.Application.Interfaces;
 
 public interface ICurrentMechShopProvider
 {
-    MechShopId GetCurrentId();
+    MechShopId Current { get; }
 }

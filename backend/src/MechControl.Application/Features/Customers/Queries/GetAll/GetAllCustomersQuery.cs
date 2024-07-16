@@ -1,11 +1,15 @@
 using MechControl.Application.Abstractions;
-using MechControl.Application.shared;
+using MechControl.Domain.Features.Customers.Enums;
 
 namespace MechControl.Application.Features.Customers.Queries.GetAll;
 
-public record GetAllCustomersQuery(
+public sealed class GetAllCustomersQuery(
     int Fetch,
     int Offset,
-    string? CustomerType) :
-    PaginationFilter(Fetch, Offset),
-    IQuery<IEnumerable<CustomerDto>>;
+    CustomerType? CustomerType) :
+    IPaginatedQuery<IEnumerable<CustomerDto>>
+{
+    public CustomerType? CustomerType { get; } = CustomerType;
+    public int Offset { get; } = Offset;
+    public int Fetch { get; } = Fetch;
+}

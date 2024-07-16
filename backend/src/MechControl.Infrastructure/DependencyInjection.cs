@@ -1,13 +1,10 @@
 ﻿using Hangfire;
-using MechControl.Application.Abstractions;
 using MechControl.Application.Interfaces;
-using MechControl.Domain.Core.Abstractions;
 using MechControl.Infrastructure.Authentication;
-using MechControl.Infrastructure.Jobs;
+using MechControl.Infrastructure.Messages.Jobs;
 using MechControl.Infrastructure.Persistence;
-using MechControl.Infrastructure.Persistence.Interceptors;
-using MechControl.Infrastructure.Session;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +18,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<DomainEventsInterceptor>();
         services.AddDbContext<MechControlContext>(opt =>
         {
             opt.UseNpgsql(
@@ -29,15 +25,12 @@ public static class DependencyInjection
                 b => b.MigrationsAssembly(typeof(MechControlContext).Assembly.FullName)
             );
         });
-        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ICurrentMechShopProvider, SessionInfoProvider>();
 
         services.Configure<KeycloakOptions>(
             configuration.GetSection(KeycloakOptions.Key));
 
         AddKeyclockJwtAuth(services, configuration);
-        AddHangfireJobs(services, configuration);
+        // AddHangfireJobs(services, configuration);
 
         return services;
     }
@@ -90,5 +83,22 @@ public static class DependencyInjection
             "OutboxMessagesProcessorJob",
             job => job.ExecuteAsync(null!),
             Cron.Minutely);
+    }
+
+        public static void ApplyMigrations(this IApplicationBuilder app)
+    {
+        using var scope = 
+            app
+                .ApplicationServices
+                .CreateScope();
+        
+        var context = 
+            scope
+                .ServiceProvider
+                .GetRequiredService<MechControlContext>();
+
+        context
+            .Database
+            .Migrate();
     }   
 }

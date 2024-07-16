@@ -11,7 +11,7 @@ public sealed class Cpf : Document
     {
     }
 
-    public static Result<Cpf> New(string value)
+    public static Result<Document> New(string value)
     {
         if (string.IsNullOrEmpty(value))
             return new Error("invalid_cpf", "CPF is required");
@@ -19,7 +19,7 @@ public sealed class Cpf : Document
         if (value.Length != Length)
             return new Error("invalid_cpf", "CPF must have 11 characters");
 
-        return Result.Ok(new Cpf(value));
+        return new Cpf(value);
     }
 
     public override IEnumerable<object> GetEqualityComponents()

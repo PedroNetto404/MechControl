@@ -17,29 +17,18 @@ public sealed class GetAllCustomersQueryHandler(
 
     public async Task<Result<IEnumerable<CustomerDto>>> Handle(
         GetAllCustomersQuery request,
-        CancellationToken cancellationToken)
-    {
-        IEnumerable<Customer> customers = await (
-            request switch
-            {
-                { CustomerType: not null } => _customerRepository.ListAsync(
-                    new GetCustomersByTypeSpec(
-                        _currentMechShopProvider.GetCurrentId(),
-                        request.CustomerType == "individual"
-                            ? typeof(IndividualCustomer)
-                            : typeof(CorporateCustomer),
-                        request.Fetch,
-                        request.Offset),
-                    cancellationToken),
-                _ => _customerRepository.ListAsync(
-                    new GetAllCustomersSpec(
-                        _currentMechShopProvider.GetCurrentId(),
-                        request.Fetch,
-                        request.Offset),
-                    cancellationToken)
-            }
-        );
-
-        return Result.Ok(customers.Select(customer => (CustomerDto)customer));
-    }
+        CancellationToken cancellationToken) => 
+            Result
+                .Ok
+                (
+                    (
+                        await _customerRepository.ListAsync(
+                            new GetAllCustomersSpec(
+                                _currentMechShopProvider.Current,
+                                request.Fetch,
+                                request.Offset,
+                                request.CustomerType),
+                            cancellationToken)
+                    ).Select(customer => (CustomerDto)customer)
+                );
 }

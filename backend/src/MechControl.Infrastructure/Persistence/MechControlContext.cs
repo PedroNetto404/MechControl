@@ -1,10 +1,11 @@
 using MechControl.Domain.Features.Customers;
+using MechControl.Infrastructure.Messages;
 using MechControl.Infrastructure.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace MechControl.Infrastructure.Persistence;
 
-public class MechControlContext(
+internal class MechControlContext(
     DbContextOptions<MechControlContext> options,
     DomainEventsInterceptor domainEventsInterceptor) : 
     DbContext(options)
@@ -12,7 +13,7 @@ public class MechControlContext(
     private readonly DomainEventsInterceptor _domainEventsInterceptor = domainEventsInterceptor;
     public DbSet<Customer> Customers { get; set; }
 
-    public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    internal DbSet<OutboxMessage> OutboxMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,13 +8,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace MechControl.Infrastructure.Jobs;
+namespace MechControl.Infrastructure.Messages.Jobs;
 
 internal sealed class OutboxMessagesProcessorJob(
     MechControlContext context,
     ISender sender,
     ILogger<OutboxMessagesProcessorJob> logger
-) 
+)
+
 {
     private readonly MechControlContext _context = context;
     private readonly ISender _sender = sender;
@@ -26,12 +27,13 @@ internal sealed class OutboxMessagesProcessorJob(
 
         foreach (var message in messages)
         {
-            var eventInstanceType = 
+            var eventInstanceType =
+
                 typeof(IDomainEvent)
                     .Assembly
                     .DefinedTypes
                     .FirstOrDefault(t => t.Name == message.EventyTypeName);
-            if(eventInstanceType is null)
+            if (eventInstanceType is null)
             {
                 _logger.LogError(
                     "Failed to find event type {EventType}",
@@ -43,7 +45,7 @@ internal sealed class OutboxMessagesProcessorJob(
             var domainEvent = JsonSerializer.Deserialize(
                 message.EventData,
                 eventInstanceType);
-            if(domainEvent is null)
+            if (domainEvent is null)
             {
                 _logger.LogError(
                     "Failed to deserialize event of type {EventType}/n{EventData}",

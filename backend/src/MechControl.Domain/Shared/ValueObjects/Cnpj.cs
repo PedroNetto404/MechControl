@@ -12,7 +12,7 @@ public sealed class Cnpj : Document
     }
 
 
-    public static Result<Cnpj> New(string value)
+    public static Result<Document> New(string value)
     {
         if (string.IsNullOrEmpty(value))
             return new Error("invalid_cnpj", "CNPJ is required");
@@ -20,6 +20,6 @@ public sealed class Cnpj : Document
         if (value.Length != Length)
             return new Error("invalid_cnpj", "CNPJ must have 14 characters");
 
-        return Result.Ok(new Cnpj(value));
+        return new Cnpj(value);
     }
 }

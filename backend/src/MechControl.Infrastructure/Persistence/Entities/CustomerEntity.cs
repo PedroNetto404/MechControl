@@ -1,5 +1,6 @@
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.Customers;
+using MechControl.Domain.Features.Customers.Enums;
 using MechControl.Domain.Features.Customers.ValueObjects;
 using MechControl.Domain.Features.MechShops;
 using MechControl.Domain.Shared.ValueObjects;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MechControl.Infrastructure.Persistence.Entities;
 
-public class CustomerEntity : IEntityTypeConfiguration<Customer>
+internal class CustomerEntity : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
@@ -110,7 +111,8 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
             .HasColumnName("cpf")
             .HasConversion(
                 cpf => cpf.Value,
-                value => Cpf.New(value));
+                value => (Cpf)Document.New(CustomerType.Individual, value))
+            .HasMaxLength(Cpf.Length);
 
         builder.Property<DateOnly>("BirthDate")
             .HasColumnName("birth_date");
@@ -119,7 +121,8 @@ public class CustomerEntity : IEntityTypeConfiguration<Customer>
             .HasColumnName("cnpj")
             .HasConversion(
                 cnpj => cnpj.Value,
-                value => Cnpj.New(value));
+                value => (Cnpj)Document.New(CustomerType.Individual, value))
+            .HasMaxLength(Cnpj.Length);
 
         builder.Property<bool>("IsMei")
             .HasColumnName("is_mei");

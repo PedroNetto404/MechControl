@@ -1,5 +1,10 @@
-﻿using MechControl.Domain.Core.Abstractions;
+﻿using System.Security.Cryptography;
+using MechControl.Domain.Core.Abstractions;
+using MechControl.Domain.Core.Errors;
 using MechControl.Domain.Core.Primitives;
+using MechControl.Domain.Core.Primitives.Result;
+using MechControl.Domain.Features.Customers.Enums;
+using MechControl.Domain.Features.Customers.Events;
 using MechControl.Domain.Features.Customers.ValueObjects;
 using MechControl.Domain.Features.MechShops;
 using MechControl.Domain.Shared.ValueObjects;
@@ -52,4 +57,60 @@ public abstract class Customer : AggregateRoot<CustomerId>, IAuditableEntity
     }
 
     public void Delete() => (DeletedOnUtc, ModifiedOnUtc) = (DateTime.UtcNow, DateTime.UtcNow);
+
+    public static Result<Customer> Create(
+        Name name,
+        Email email,
+        Phone phone,
+        Address address,
+         MechShopId mechShopId,
+         CustomerType type,
+         Document document,
+        bool? isMei = null,
+        DateOnly? birthDate = null
+       )
+    {
+        Customer customer;
+        if (type == CustomerType.Individual)
+        {
+            if (document is not Cpf cpf || birthDate is null)
+                return new DomainError(
+                    "invalid_customer_data",
+                    "Ensure valid customer data",
+                    nameof(Customer));
+
+            customer = new IndividualCustomer(
+                name,
+                email,
+                phone,
+                address,
+                cpf,
+                birthDate.Value,
+                mechShopId
+            );
+        }
+        else
+        {
+            if (document is not Cnpj cnpj || isMei is null)
+                return new DomainError(
+                    "invalid_customer_data",
+                    "Ensure valid customer data",
+                    nameof(Customer)
+                );
+
+            customer = new CorporateCustomer(
+                name,
+                email,
+                phone,
+                address,
+                cnpj,
+                isMei.Value,
+                mechShopId
+            );
+        }
+
+        customer.RaiseDomainEvent(new CustomerCreated(customer.Id));
+
+        return customer;
+    }
 }

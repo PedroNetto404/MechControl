@@ -1,27 +1,33 @@
 using MechControl.Application.Interfaces;
+using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.MechShops;
 using Microsoft.AspNetCore.Http;
 
 namespace MechControl.Infrastructure.Session;
 
-public sealed class SessionInfoProvider(
+[ScopedService(typeof(ICurrentMechShopProvider))]
+internal sealed class SessionInfoProvider(
     IHttpContextAccessor httpContextAccessor
 ) : ICurrentMechShopProvider
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-    public MechShopId GetCurrentId()
+
+    public MechShopId Current 
     {
-        var context = _httpContextAccessor.HttpContext;
-        if(context.User is not { Identity.IsAuthenticated: true } user)
-            throw new InvalidOperationException("User is not authenticated");
+        get 
+        {
+            var context = _httpContextAccessor.HttpContext;
+            if(context is not { User.Identity.IsAuthenticated: true})
+                throw new InvalidOperationException("User is not authenticated");
 
-        var mechShopId = context.User.Claims
-            .FirstOrDefault(claim => claim.Type == "MechShopId")?.Value;
+            var mechShopId = context.User.Claims
+                .FirstOrDefault(claim => claim.Type == "MechShopId")?.Value;
 
-        if(!Guid.TryParse(mechShopId, out var id))
-            throw new InvalidOperationException("MechShopId is not a valid GUID");
+            if(!Guid.TryParse(mechShopId, out var id))
+                throw new InvalidOperationException("MechShopId is not a valid GUID");
 
-        return StrongId.From<MechShopId>(id);
+            return StrongId.From<MechShopId>(id);
+        }
     }
 }

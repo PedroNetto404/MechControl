@@ -1,9 +1,10 @@
+using MechControl.Infrastructure.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MechControl.Infrastructure.Persistence.Entities;
 
-public sealed class OutboxMessageEntity : IEntityTypeConfiguration<OutboxMessage>
+internal sealed class OutboxMessageEntity : IEntityTypeConfiguration<OutboxMessage>
 {
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {

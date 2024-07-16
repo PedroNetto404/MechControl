@@ -1,12 +1,14 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 
 namespace MechControl.Infrastructure.Persistence;
 
-public class Repository<TAggregateRoot, TAggregateRootId>(
+[ScopedService(typeof(IRepository<,>))]
+internal class Repository<TAggregateRoot, TAggregateRootId>(
     MechControlContext context
 ) :
     IRepository<TAggregateRoot, TAggregateRootId>

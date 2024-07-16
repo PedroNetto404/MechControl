@@ -1,8 +1,9 @@
-namespace MechControl.Domain.Features.Customers.Specifications;
-
 using Ardalis.Specification;
 using MechControl.Domain.Features.MechShops;
 using MechControl.Domain.Shared.ValueObjects;
+
+namespace MechControl.Domain.Features.Customers.Specifications;
+
 
 public class GetCustomerByEmailSpec : Specification<Customer>
 {
@@ -12,5 +13,4 @@ public class GetCustomerByEmailSpec : Specification<Customer>
 		Query
 			.Where(customer => customer.MechShopId == mechanicShopId)
 			.Where(customer => customer.Email == email);
-
 }

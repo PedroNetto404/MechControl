@@ -1,26 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import RouterLink from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
-import Person2Icon from '@mui/icons-material/Person2';
+import { 
+    ExpandLess, 
+    ExpandMore, 
+    People, 
+    LocalShipping, 
+    DirectionsCar, 
+    Build, 
+    AttachMoney, 
+    BarChart, 
+    Settings 
+} from '@mui/icons-material';
 import {
     Collapse,
     Divider,
     Drawer,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     SvgIconTypeMap,
+    useMediaQuery,
     useTheme,
 } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { Box, Stack } from '@mui/system';
-import { useMediaQuery } from '@mui/material';
 
 import { Logo } from '@/components/pages/core/logo';
 
@@ -43,14 +50,49 @@ const SideBarItems: SideBarItem[] = [
     {
         title: 'Clientes',
         pagePath: '/pages/customers',
-        icon: Person2Icon,
+        icon: People,
         items: [
             {
                 title: 'Veículos',
                 pagePath: '/pages/customers/vehicles',
-                icon: DirectionsCarFilledIcon,
+                icon: DirectionsCar,
             },
         ],
+    },
+    {
+        title: 'Fornecedores',
+        pagePath: '/pages/suppliers',
+        icon: LocalShipping,
+    },
+    {
+        title: 'Veículos',
+        pagePath: '/pages/vehicles',
+        icon: DirectionsCar,
+    },
+    {
+        title: 'Peças',
+        pagePath: '/pages/parts',
+        icon: Build,
+    },
+    {
+        title: 'Financeiro',
+        pagePath: '/pages/financial',
+        icon: AttachMoney,
+    },
+    {
+        title: 'Orçamento',
+        pagePath: '/pages/budget',
+        icon: AttachMoney,
+    },
+    {
+        title: 'Relatórios',
+        pagePath: '/pages/reports',
+        icon: BarChart,
+    },
+    {
+        title: 'Configurações',
+        pagePath: '/pages/settings',
+        icon: Settings,
     },
 ];
 
@@ -61,15 +103,20 @@ export const SideBarItem: React.FC<SideBarItemProps> = ({ item, depth = 0, showT
     const pathname = usePathname();
     const router = useRouter();
     const theme = useTheme();
-    const activeColor = theme.palette.primary.main;
-    const inactiveColor = theme.palette.text.secondary;
+    const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
     const handleClick = () => {
         if (hasSubItems) {
             setOpen((prev) => !prev);
         }
 
-        router.push(item.pagePath);
+        if (isMobile) {
+            router.push(item.pagePath);
+        } else {
+            if (pathname !== item.pagePath) {
+                router.push(item.pagePath);
+            }
+        }
     };
 
     const isActive = pathname === item.pagePath;
@@ -77,14 +124,46 @@ export const SideBarItem: React.FC<SideBarItemProps> = ({ item, depth = 0, showT
 
     return (
         <>
-            <ListItem button onClick={handleClick} sx={{ pl: `${depth * 2 + 1}rem`, pr: 2 }}>
-                <ListItemIcon sx={{ minWidth: '40px' }}>
-                    <Icon sx={{ color: isActive ? activeColor : inactiveColor }} />
+            <ListItem
+                onClick={handleClick}
+                sx={{
+                    pl: `${depth * 2 + 1}rem`,
+                    pr: 2,
+                    bgcolor: isActive ? 'var(--NavItem-active-background)' : 'inherit',
+                    color: isActive ? 'var(--NavItem-active-color)' : 'var(--NavItem-color)',
+                    '&:hover': {
+                        bgcolor: 'var(--NavItem-hover-background)',
+                    },
+                    '&:focus': {
+                        bgcolor: 'var(--NavItem-active-background)',
+                        color: 'var(--NavItem-active-color)',
+                    },
+                    transition: theme.transitions.create(['background-color', 'color'], {
+                        duration: theme.transitions.duration.short,
+                    }),
+                }}
+            >
+                <ListItemIcon
+                    sx={{
+                        minWidth: '40px',
+                        color: isActive ? 'var(--NavItem-icon-active-color)' : 'var(--NavItem-icon-color)',
+                    }}
+                >
+                    <Icon />
                 </ListItemIcon>
                 {showTitle && (
-                    <ListItemText primary={item.title} sx={{ color: isActive ? activeColor : inactiveColor }} />
+                    <ListItemText
+                        primary={item.title}
+                        sx={{ color: isActive ? 'var(--NavItem-active-color)' : 'var(--NavItem-color)' }}
+                    />
                 )}
-                {hasSubItems && <ExpandIcon sx={{ color: isActive ? activeColor : inactiveColor }} />}
+                {hasSubItems && (
+                    <ExpandIcon
+                        sx={{
+                            color: isActive ? 'var(--NavItem-active-color)' : 'var(--NavItem-color)',
+                        }}
+                    />
+                )}
             </ListItem>
             {hasSubItems && (
                 <Collapse in={open} timeout="auto" unmountOnExit>
@@ -131,11 +210,6 @@ export const SideBar: React.FC<{ openNav: boolean; toggleNav: () => void }> = ({
                 }}
                 open={openNav}
                 onClose={toggleNav}
-                onClick={(e) => {
-                    if (isMobile && !(e.target as Element).closest('.MuiDrawer-paper')) {
-                        toggleNav();
-                    }
-                }}
             >
                 <Box
                     sx={{
@@ -167,7 +241,7 @@ export const SideBar: React.FC<{ openNav: boolean; toggleNav: () => void }> = ({
                     <Box sx={{ p: 3 }}>
                         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
                             <Box component={RouterLink} href={'/pages/customers'} sx={{ display: 'inline-flex' }}>
-                            {/*TODO*/}
+                                <Logo />
                             </Box>
                         </Stack>
                     </Box>

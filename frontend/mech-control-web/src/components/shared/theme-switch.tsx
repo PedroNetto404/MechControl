@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
@@ -8,11 +8,17 @@ import Switch from '@mui/material/Switch';
 export const ThemeSwitch: React.FC = () => {
     const theme = useTheme();
     const [isDarkMode, setIsDarkMode] = useState<boolean>(theme.palette.mode === 'dark');
-    document.documentElement.setAttribute('data-mui-color-scheme', isDarkMode ? 'dark' : 'light');
 
-    const toggleTheme: () => void = () => {
-        setIsDarkMode((prev) => !prev);
+    const updateTheme = useCallback(() => {
         document.documentElement.setAttribute('data-mui-color-scheme', isDarkMode ? 'dark' : 'light');
+    }, [isDarkMode]);
+
+    useEffect(() => {
+        updateTheme();
+    }, [isDarkMode, updateTheme]);
+
+    const toggleTheme = () => {
+        setIsDarkMode((prev) => !prev);
     };
 
     const MuiSwitch = styled(Switch)(({ theme }) => ({
@@ -62,5 +68,5 @@ export const ThemeSwitch: React.FC = () => {
         },
     }));
 
-    return <MuiSwitch checked={isDarkMode} onClick={toggleTheme} />;
+    return <MuiSwitch checked={isDarkMode} onChange={toggleTheme} />;
 };

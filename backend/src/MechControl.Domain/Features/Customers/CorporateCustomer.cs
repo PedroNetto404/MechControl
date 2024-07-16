@@ -9,7 +9,7 @@ public sealed class CorporateCustomer : Customer
 {
     public bool IsMei { get; private set; }
 
-    public CorporateCustomer(
+    internal CorporateCustomer(
         Name name,
         Email email,
         Phone phone,

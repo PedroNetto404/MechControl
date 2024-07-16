@@ -9,7 +9,7 @@ public sealed class IndividualCustomer : Customer
 {
     public DateOnly BirthDate { get; private set; }
 
-    private IndividualCustomer(
+    internal IndividualCustomer(
         Name name,
         Email email,
         Phone phone,

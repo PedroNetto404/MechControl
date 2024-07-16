@@ -1,13 +1,10 @@
-﻿namespace MechControl.Infrastructure;
+﻿namespace MechControl.Infrastructure.Messages;
 
-public record OutboxMessage(
+internal record OutboxMessage(
     string EventyTypeName,
-    string EventData
-)
+    string EventData)
 {
     public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
-
     public DateTime? ProcessedOnUtc { get; set; }
-
     public Guid Id { get; } = Guid.NewGuid();
 }
