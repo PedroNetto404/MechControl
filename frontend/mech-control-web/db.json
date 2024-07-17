@@ -1,0 +1,490 @@
+{
+    "customers": [
+        {
+            "id": "1",
+            "name": {
+                "fullname": "John Doe",
+                "first": "John",
+                "middle": "Middle",
+                "last": "Doe"
+            },
+            "email": "john.doe@example.com",
+            "phone": "1234567890",
+            "address": {
+                "street": "Main St",
+                "number": "123",
+                "neighborhood": "Downtown",
+                "complement": "Apt 1",
+                "reference": "Near Park",
+                "city": "Cityville",
+                "countryCode": "BR",
+                "stateCode": "SP",
+                "zipCode": "12345-678"
+            },
+            "document": "12345678901",
+            "mechShopId": "1",
+            "createdOnUtc": "2024-07-17T00:00:00Z",
+            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+        },
+        {
+            "id": "2",
+            "name": {
+                "fullname": "Jane Smith",
+                "first": "Jane",
+                "middle": "Middle",
+                "last": "Smith"
+            },
+            "email": "jane.smith@example.com",
+            "phone": "0987654321",
+            "address": {
+                "street": "Second St",
+                "number": "456",
+                "neighborhood": "Uptown",
+                "complement": "Suite 5",
+                "reference": "Near Mall",
+                "city": "Townsville",
+                "countryCode": "BR",
+                "stateCode": "RJ",
+                "zipCode": "98765-432"
+            },
+            "document": "98765432101",
+            "mechShopId": "2",
+            "createdOnUtc": "2024-07-17T00:00:00Z",
+            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+        },
+        {
+            "id": "3",
+            "name": {
+                "fullname": "Robert Brown",
+                "first": "Robert",
+                "middle": "Middle",
+                "last": "Brown"
+            },
+            "email": "robert.brown@example.com",
+            "phone": "5551234567",
+            "address": {
+                "street": "Third St",
+                "number": "789",
+                "neighborhood": "Midtown",
+                "complement": "Floor 2",
+                "reference": "Near School",
+                "city": "Villagetown",
+                "countryCode": "BR",
+                "stateCode": "MG",
+                "zipCode": "56789-012"
+            },
+            "document": "56789012345",
+            "mechShopId": "3",
+            "createdOnUtc": "2024-07-17T00:00:00Z",
+            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+        },
+        {
+            "id": "4",
+            "name": {
+                "fullname": "Alice Johnson",
+                "first": "Alice",
+                "middle": "Middle",
+                "last": "Johnson"
+            },
+            "email": "alice.johnson@example.com",
+            "phone": "4441231234",
+            "address": {
+                "street": "Fourth St",
+                "number": "101",
+                "neighborhood": "Suburb",
+                "complement": "House 5",
+                "reference": "Near Park",
+                "city": "Metropolis",
+                "countryCode": "BR",
+                "stateCode": "SP",
+                "zipCode": "11223-445"
+            },
+            "document": "12345098765",
+            "mechShopId": "4",
+            "createdOnUtc": "2024-07-17T00:00:00Z",
+            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+        },
+        {
+            "id": "5",
+            "name": {
+                "fullname": "Charlie Davis",
+                "first": "Charlie",
+                "middle": "Middle",
+                "last": "Davis"
+            },
+            "email": "charlie.davis@example.com",
+            "phone": "3334567890",
+            "address": {
+                "street": "Fifth St",
+                "number": "202",
+                "neighborhood": "Downtown",
+                "complement": "Apt 10",
+                "reference": "Near Stadium",
+                "city": "Megacity",
+                "countryCode": "BR",
+                "stateCode": "RJ",
+                "zipCode": "22334-556"
+            },
+            "document": "67890123456",
+            "mechShopId": "5",
+            "createdOnUtc": "2024-07-17T00:00:00Z",
+            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+        }
+    ],
+    "vehicles": [
+        {
+            "id": {
+                "id": "1"
+            },
+            "plate": "ABC1234",
+            "color": "Red",
+            "model": "Model S",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000337",
+            "manufactoryYear": 2020,
+            "currentMileage": 15000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "2"
+            },
+            "plate": "DEF5678",
+            "color": "Blue",
+            "model": "Model 3",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000338",
+            "manufactoryYear": 2021,
+            "currentMileage": 10000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "3"
+            },
+            "plate": "GHI9012",
+            "color": "Black",
+            "model": "Model X",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000339",
+            "manufactoryYear": 2022,
+            "currentMileage": 5000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "4"
+            },
+            "plate": "JKL3456",
+            "color": "White",
+            "model": "Model Y",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000340",
+            "manufactoryYear": 2019,
+            "currentMileage": 20000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "5"
+            },
+            "plate": "MNO7890",
+            "color": "Silver",
+            "model": "Model 3",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000341",
+            "manufactoryYear": 2018,
+            "currentMileage": 25000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "6"
+            },
+            "plate": "PQR1234",
+            "color": "Green",
+            "model": "Model S",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000342",
+            "manufactoryYear": 2017,
+            "currentMileage": 30000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "7"
+            },
+            "plate": "STU5678",
+            "color": "Yellow",
+            "model": "Model X",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000343",
+            "manufactoryYear": 2016,
+            "currentMileage": 35000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "8"
+            },
+            "plate": "VWX9012",
+            "color": "Blue",
+            "model": "Model Y",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000344",
+            "manufactoryYear": 2015,
+            "currentMileage": 40000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "9"
+            },
+            "plate": "YZA3456",
+            "color": "Red",
+            "model": "Model 3",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000345",
+            "manufactoryYear": 2014,
+            "currentMileage": 45000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "10"
+            },
+            "plate": "BCD7890",
+            "color": "Black",
+            "model": "Model S",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000346",
+            "manufactoryYear": 2013,
+            "currentMileage": 50000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "11"
+            },
+            "plate": "EFG1234",
+            "color": "White",
+            "model": "Model X",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000347",
+            "manufactoryYear": 2012,
+            "currentMileage": 55000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "12"
+            },
+            "plate": "HIJ5678",
+            "color": "Silver",
+            "model": "Model Y",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000348",
+            "manufactoryYear": 2011,
+            "currentMileage": 60000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "13"
+            },
+            "plate": "KLM9012",
+            "color": "Blue",
+            "model": "Model 3",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000349",
+            "manufactoryYear": 2010,
+            "currentMileage": 65000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "14"
+            },
+            "plate": "NOP3456",
+            "color": "Green",
+            "model": "Model S",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000350",
+            "manufactoryYear": 2009,
+            "currentMileage": 70000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        },
+        {
+            "id": {
+                "id": "15"
+            },
+            "plate": "QRS7890",
+            "color": "Yellow",
+            "model": "Model X",
+            "brand": "Tesla",
+            "vin": "5YJ3E1EA7HF000351",
+            "manufactoryYear": 2008,
+            "currentMileage": 75000,
+            "transmission": "automatic",
+            "fuelType": "electric",
+            "systemDetails": {
+                "electrical": "Battery",
+                "engine": "Motor"
+            }
+        }
+    ],
+    "carSystems": [
+        {
+            "name": "Electrical",
+            "value": 1
+        },
+        {
+            "name": "Engine",
+            "value": 2
+        },
+        {
+            "name": "Transmission",
+            "value": 3
+        },
+        {
+            "name": "Suspension",
+            "value": 4
+        },
+        {
+            "name": "Braking",
+            "value": 5
+        },
+        {
+            "name": "AirConditioning",
+            "value": 6
+        },
+        {
+            "name": "Cooling",
+            "value": 7
+        },
+        {
+            "name": "Other",
+            "value": 8
+        }
+    ],
+    "customerTypes": [
+        {
+            "type": "Corporate",
+            "value": 1
+        },
+        {
+            "type": "Individual",
+            "value": 2
+        }
+    ],
+    "fuelTypes": [
+        {
+            "name": "Gasoline",
+            "value": 1
+        },
+        {
+            "name": "Diesel",
+            "value": 2
+        },
+        {
+            "name": "Ethanol",
+            "value": 3
+        },
+        {
+            "name": "FlexFuel",
+            "value": 4
+        },
+        {
+            "name": "Electric",
+            "value": 5
+        },
+        {
+            "name": "Hybrid",
+            "value": 6
+        },
+        {
+            "name": "Other",
+            "value": 7
+        }
+    ],
+    "transmissionTypes": [
+        {
+            "name": "Manual",
+            "value": 1
+        },
+        {
+            "name": "Automatic",
+            "value": 2
+        }
+    ]
+}
