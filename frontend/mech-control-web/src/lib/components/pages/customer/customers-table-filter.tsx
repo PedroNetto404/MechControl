@@ -1,104 +1,106 @@
-import { Card, CardHeader, Radio, RadioGroup, Stack, TextField } from "@mui/material";
+"use client";
+
+import { Button, Checkbox, Stack, TextField } from "@mui/material";
 import { CustomerType } from "@/types/enums/customer-type";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
-  Paper,
 } from "@mui/material";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Label } from "@mui/icons-material";
+import ExportIcon from "@mui/icons-material/Download";
+import { useState } from "react";
+
+type CustomerTypeCheckProps = {
+  label: string;
+  onClick: () => void;
+  checked: boolean;
+};
+
+const CustomerTypeCheck: React.FC<CustomerTypeCheckProps> = ({
+  onClick,
+  label,
+  checked,
+}) => (
+  <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Typography>{label}</Typography>
+    <Checkbox checked={checked} onClick={onClick} />
+  </Stack>
+);
+
 type CustomersTableFilterProps = {
   onSearchTextChange: (searchText: string) => void;
-  onSortChange: (sort: string) => void;
-  onOrderChange: (order: string) => void;
-  onFetchChange: (fetch: number) => void;
-  onOffsetChange: (offset: number) => void;
   onCustomerTypeChange: (customerType: CustomerType, selected: boolean) => void;
 };
 
-export const CustomersTableFilter = (props: CustomersTableFilterProps) => {
+export const CustomersTableFilter: React.FC<CustomersTableFilterProps> = ({
+  onSearchTextChange,
+  onCustomerTypeChange,
+}) => {
+  const [showIndividualCustomer, setShowIndividualCustomer] = useState(true);
+  const [showCorporateCustomer, setShowCorporateCustomer] = useState(true);
+
   return (
-    <Card>
-      <CardHeader title="Filtrar" />
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Search</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
+    <Accordion
+      elevation={0}
+      defaultExpanded
+      sx={{
+        ".MuiAccordionSummary-root, .MuiAccordionDetails-root": {
+          padding: 0,
+          margin: 0,
+          width: "100%",
+        },
+      }}
+    >
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography fontSize={18} fontWeight={"bold"}>
+          Filtros
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Stack direction="row" gap={2} justifyContent="space-between">
           <TextField
-            label="Search"
-            onChange={(e) => props.onSearchTextChange(e.target.value)}
+            sx={{
+              width: "60%",
+            }}
+            fullWidth
+            label="Pesquise pelo nome, telefone, cpf/cnpj, etc"
+            onChange={(e) => onSearchTextChange(e.target.value)}
           />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Sort</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            label="Sort"
-            onChange={(e) => props.onSortChange(e.target.value)}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Order</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            label="Order"
-            onChange={(e) => props.onOrderChange(e.target.value)}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Fetch</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            label="Fetch"
-            onChange={(e) => props.onFetchChange(Number(e.target.value))}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Offset</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            label="Offset"
-            onChange={(e) => props.onOffsetChange(Number(e.target.value))}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Customer Type</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack spacing={2} direction="row">        
-            <Radio
-                value={CustomerType.individual}
-                onChange={(e) =>
-                    props.onCustomerTypeChange(
-                    CustomerType.individual,
-                    e.target.checked
-                    )
-                }
-            />
-              <Label>
-                Pessoa Físisca
-            </Label>
+          <Stack width="40%" direction="row" justifyContent="space-between" gap={2}>
+            <Typography fontWeight="bold">Tipo de Cliente</Typography>
+            <Stack direction="row" alignItems="start">
+              <CustomerTypeCheck
+                onClick={() => {
+                  const show = !showIndividualCustomer;
+                  onCustomerTypeChange(CustomerType.individual, show);
+                  setShowIndividualCustomer(show);
+                }}
+                checked={showIndividualCustomer}
+                label="Pessoa Física"
+              />
+              <CustomerTypeCheck
+                onClick={() => {
+                  const show = !showCorporateCustomer;
+                  onCustomerTypeChange(CustomerType.corporate, show);
+                  setShowCorporateCustomer(show);
+                }}
+                checked={showCorporateCustomer}
+                label="Pessoa Jurídica"
+              />
+              <Button
+                variant="outlined"
+                sx={{
+                  marginRight: 2,
+                }}
+              >
+                <ExportIcon /> Exportar
+              </Button>
+            </Stack>
           </Stack>
-        </AccordionDetails>
-      </Accordion>
-    </Card>
+        </Stack>
+      </AccordionDetails>
+    </Accordion>
   );
 };

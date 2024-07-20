@@ -2,133 +2,103 @@
     "customers": [
         {
             "id": "1",
-            "name": {
-                "fullname": "John Doe",
-                "first": "John",
-                "middle": "Middle",
-                "last": "Doe"
-            },
+            "name": "John Doe",
             "email": "john.doe@example.com",
             "phone": "1234567890",
-            "address": {
-                "street": "Main St",
-                "number": "123",
-                "neighborhood": "Downtown",
-                "complement": "Apt 1",
-                "reference": "Near Park",
-                "city": "Cityville",
-                "countryCode": "BR",
-                "stateCode": "SP",
-                "zipCode": "12345-678"
-            },
+            "addressStreet": "Rua Mato Grosso",
+            "addressNumber": "161829",
+            "addressNeighborhood": "Ipiranga",
+            "addressComplement": "Casa",
+            "addressReference": "Prox esquina",
+            "addressCity": "Ribeirão Preto",
+            "addressCountryCode": "BR",
+            "addressStateCode": "SP",
+            "addressZipCode": "14055060",
             "document": "12345678901",
             "mechShopId": "1",
             "createdOnUtc": "2024-07-17T00:00:00Z",
-            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+            "modifiedOnUtc": "2024-07-17T00:00:00Z",
+            "type": "individual"
         },
         {
             "id": "2",
-            "name": {
-                "fullname": "Jane Smith",
-                "first": "Jane",
-                "middle": "Middle",
-                "last": "Smith"
-            },
+            "name": "John Doe",
             "email": "jane.smith@example.com",
             "phone": "0987654321",
-            "address": {
-                "street": "Second St",
-                "number": "456",
-                "neighborhood": "Uptown",
-                "complement": "Suite 5",
-                "reference": "Near Mall",
-                "city": "Townsville",
-                "countryCode": "BR",
-                "stateCode": "RJ",
-                "zipCode": "98765-432"
-            },
+            "addressStreet": "Rua Mato Grosso",
+            "addressNumber": "161829",
+            "addressNeighborhood": "Ipiranga",
+            "addressComplement": "Casa",
+            "addressReference": "Prox esquina",
+            "addressCity": "Ribeirão Preto",
+            "addressCountryCode": "BR",
+            "addressStateCode": "SP",
+            "addressZipCode": "14055060",
             "document": "98765432101",
             "mechShopId": "2",
             "createdOnUtc": "2024-07-17T00:00:00Z",
-            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+            "modifiedOnUtc": "2024-07-17T00:00:00Z",
+            "type": "corporate"
         },
         {
             "id": "3",
-            "name": {
-                "fullname": "Robert Brown",
-                "first": "Robert",
-                "middle": "Middle",
-                "last": "Brown"
-            },
+            "name": "John Doe",
             "email": "robert.brown@example.com",
             "phone": "5551234567",
-            "address": {
-                "street": "Third St",
-                "number": "789",
-                "neighborhood": "Midtown",
-                "complement": "Floor 2",
-                "reference": "Near School",
-                "city": "Villagetown",
-                "countryCode": "BR",
-                "stateCode": "MG",
-                "zipCode": "56789-012"
-            },
+            "addressStreet": "Rua Mato Grosso",
+            "addressNumber": "161829",
+            "addressNeighborhood": "Ipiranga",
+            "addressComplement": "Casa",
+            "addressReference": "Prox esquina",
+            "addressCity": "Ribeirão Preto",
+            "addressCountryCode": "BR",
+            "addressStateCode": "SP",
+            "addressZipCode": "14055060",
             "document": "56789012345",
             "mechShopId": "3",
             "createdOnUtc": "2024-07-17T00:00:00Z",
-            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+            "modifiedOnUtc": "2024-07-17T00:00:00Z",
+            "type": "individual"
         },
         {
             "id": "4",
-            "name": {
-                "fullname": "Alice Johnson",
-                "first": "Alice",
-                "middle": "Middle",
-                "last": "Johnson"
-            },
+            "name": "John Doe",
             "email": "alice.johnson@example.com",
             "phone": "4441231234",
-            "address": {
-                "street": "Fourth St",
-                "number": "101",
-                "neighborhood": "Suburb",
-                "complement": "House 5",
-                "reference": "Near Park",
-                "city": "Metropolis",
-                "countryCode": "BR",
-                "stateCode": "SP",
-                "zipCode": "11223-445"
-            },
+            "addressStreet": "Rua Mato Grosso",
+            "addressNumber": "161829",
+            "addressNeighborhood": "Ipiranga",
+            "addressComplement": "Casa",
+            "addressReference": "Prox esquina",
+            "addressCity": "Ribeirão Preto",
+            "addressCountryCode": "BR",
+            "addressStateCode": "SP",
+            "addressZipCode": "14055060",
             "document": "12345098765",
             "mechShopId": "4",
             "createdOnUtc": "2024-07-17T00:00:00Z",
-            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+            "modifiedOnUtc": "2024-07-17T00:00:00Z",
+            "type": "corporate"
         },
         {
             "id": "5",
-            "name": {
-                "fullname": "Charlie Davis",
-                "first": "Charlie",
-                "middle": "Middle",
-                "last": "Davis"
-            },
+            "name": "John Doe",
             "email": "charlie.davis@example.com",
             "phone": "3334567890",
-            "address": {
-                "street": "Fifth St",
-                "number": "202",
-                "neighborhood": "Downtown",
-                "complement": "Apt 10",
-                "reference": "Near Stadium",
-                "city": "Megacity",
-                "countryCode": "BR",
-                "stateCode": "RJ",
-                "zipCode": "22334-556"
-            },
+            "addressStreet": "Rua Mato Grosso",
+            "addressNumber": "161829",
+            "addressNeighborhood": "Ipiranga",
+            "addressComplement": "Casa",
+            "addressReference": "Prox esquina",
+            "addressCity": "Ribeirão Preto",
+            "addressCountryCode": "BR",
+            "addressStateCode": "SP",
+            "addressZipCode": "14055060",
             "document": "67890123456",
             "mechShopId": "5",
             "createdOnUtc": "2024-07-17T00:00:00Z",
-            "modifiedOnUtc": "2024-07-17T00:00:00Z"
+            "modifiedOnUtc": "2024-07-17T00:00:00Z",
+            "type": "individual"
         }
     ],
     "vehicles": [

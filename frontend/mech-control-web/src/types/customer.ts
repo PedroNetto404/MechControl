@@ -1,12 +1,11 @@
+import { String } from "lodash";
 import { CustomerType } from "./enums/customer-type";
 
 export interface Customer {
   id: string;
-  firstName: string;
-  middleName: string;
+  name: string;
   isMei?: boolean;
   birthDate?: Date;
-  lastName: string;
   email: string;
   phone: string;
   addressStreet: string;
@@ -18,12 +17,11 @@ export interface Customer {
   addressCountryCode: string;
   addressStateCode: string;
   addressZipCode: string;
-  document: Document;
+  document: string;
   mechShopId: string;
   createdOnUtc: Date;
   modifiedOnUtc: Date;
   type: CustomerType;
-  age(): number;
 }
 
 export function getAge(birthDate: Date): number {

@@ -46,7 +46,6 @@ const Sidebar = ({
             </Box>
             <Box>
               <SidebarItems />
-              <Upgrade />
             </Box>
           </Box>
         </Drawer>

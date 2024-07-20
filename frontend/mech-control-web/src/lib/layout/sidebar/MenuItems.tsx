@@ -20,13 +20,13 @@ const ManagementMenuitems = [
     id: uniqueId(),
     title: 'Clientes',
     icon: IconLayoutDashboard,
-    href: '/management/customers',
+    href: '/pages/customers',
   },
   {
     id: uniqueId(),
     title: 'Veículos',
     icon: IconCar,
-    href: '/management/vehicles'
+    href: '/pages/vehicles'
   }
 ];
 

@@ -18,7 +18,7 @@ import {
   VisibilityOff as VisibilityOffIcon,
   Email as EmailIcon,
 } from "@mui/icons-material";
-import CustomTextField from "@/app/components/forms/theme-elements/CustomTextField";
+import CustomTextField from "@/lib/components/shared/forms/theme-elements/CustomTextField";
 
 interface loginType {
   title?: string;
