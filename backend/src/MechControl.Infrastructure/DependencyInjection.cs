@@ -1,8 +1,10 @@
-﻿using Hangfire;
+﻿using MechControl.Application.Abstractions;
 using MechControl.Application.Interfaces;
+using MechControl.Domain.Core.Abstractions;
 using MechControl.Infrastructure.Authentication;
-using MechControl.Infrastructure.Messages.Jobs;
 using MechControl.Infrastructure.Persistence;
+using MechControl.Infrastructure.Persistence.Interceptors;
+using MechControl.Infrastructure.Session;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -26,11 +28,17 @@ public static class DependencyInjection
             );
         });
 
-        services.Configure<KeycloakOptions>(
-            configuration.GetSection(KeycloakOptions.Key));
+        services.AddOptions<KeycloakOptions>()
+                .Bind(configuration.GetSection(KeycloakOptions.Key))
+                 .ValidateDataAnnotations();
+
+        services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<DomainEventsInterceptor>();
+        services.AddScoped<ICurrentMechShopProvider, SessionInfoProvider>();
+        services.AddScoped<IAuthenticationService, KeycloakAuthenticationService>();
 
         AddKeyclockJwtAuth(services, configuration);
-        // AddHangfireJobs(services, configuration);
 
         return services;
     }
@@ -68,31 +76,14 @@ public static class DependencyInjection
         services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
     }
 
-    private static void AddHangfireJobs(IServiceCollection services, IConfiguration config)
+    public static void ApplyMigrations(this IApplicationBuilder app)
     {
-        services.AddHangfireServer();
-
-        services.AddHangfire(c => {
-            c.UseSqlServerStorage(config.GetConnectionString("DefaultConnection"));
-        });
-
-        var recurringJobManager = services.BuildServiceProvider()
-                                          .GetService<IRecurringJobManager>();
-                                          
-        recurringJobManager.AddOrUpdate<OutboxMessagesProcessorJob>(
-            "OutboxMessagesProcessorJob",
-            job => job.ExecuteAsync(null!),
-            Cron.Minutely);
-    }
-
-        public static void ApplyMigrations(this IApplicationBuilder app)
-    {
-        using var scope = 
+        using var scope =
             app
                 .ApplicationServices
                 .CreateScope();
-        
-        var context = 
+
+        var context =
             scope
                 .ServiceProvider
                 .GetRequiredService<MechControlContext>();
@@ -100,5 +91,5 @@ public static class DependencyInjection
         context
             .Database
             .Migrate();
-    }   
+    }
 }

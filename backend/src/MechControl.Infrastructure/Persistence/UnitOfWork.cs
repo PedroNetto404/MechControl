@@ -1,12 +1,10 @@
 ﻿using MechControl.Application.Abstractions;
-using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.Customers;
 using MechControl.Domain.Features.Users;
 
 namespace MechControl.Infrastructure.Persistence;
 
-[ScopedService(typeof(IUnitOfWork))]
 internal class UnitOfWork(
     MechControlContext context,
     IRepository<Customer, CustomerId> customers,

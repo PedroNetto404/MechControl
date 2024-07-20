@@ -1,14 +1,11 @@
-﻿using Hangfire;
-using MechControl.Api.Middlewares;
+﻿using MechControl.Api.Middlewares;
 
 namespace MechControl.Api.Extensions;
 
 public static class AppBuilderExtensions
 {
-
-
     public static void UseCustomExceptionHandler(
-        this IApplicationBuilder app) => 
+        this IApplicationBuilder app) =>
         app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 
     public static void AddPipeline(this WebApplication app)
@@ -30,7 +27,5 @@ public static class AppBuilderExtensions
 
         app.UseHttpsRedirection();
         app.MapControllers();
-
-        app.UseHangfireDashboard();
     }
 }

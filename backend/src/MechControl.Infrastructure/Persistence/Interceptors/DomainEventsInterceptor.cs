@@ -1,12 +1,10 @@
 ﻿using System.Text.Json;
-using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Infrastructure.Messages;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MechControl.Infrastructure.Persistence.Interceptors;
 
-[ScopedService]
 internal class DomainEventsInterceptor : SaveChangesInterceptor
 {
     public async override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)

@@ -1,14 +1,12 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
-using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 
 namespace MechControl.Infrastructure.Persistence;
 
-[ScopedService(typeof(IRepository<,>))]
-internal class Repository<TAggregateRoot, TAggregateRootId>(
+internal class EfRepository<TAggregateRoot, TAggregateRootId>(
     MechControlContext context
 ) :
     IRepository<TAggregateRoot, TAggregateRootId>
@@ -18,7 +16,7 @@ internal class Repository<TAggregateRoot, TAggregateRootId>(
     private readonly MechControlContext _context = context;
 
     public Task<TAggregateRoot?> GetByIdAsync(
-        TAggregateRootId id, 
+        TAggregateRootId id,
         CancellationToken cancellationToken = default) =>
         _context
             .Set<TAggregateRoot>()

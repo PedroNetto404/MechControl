@@ -1,7 +1,0 @@
-{
-    "csharp.debug.console": "externalTerminal",
-    "debug.terminal.clearBeforeReusing": true,
-    "terminal.explorerKind": "external",
-    "terminal.sourceControlRepositoriesKind": "external"
-
-}

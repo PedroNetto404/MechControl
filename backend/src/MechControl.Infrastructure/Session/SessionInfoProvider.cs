@@ -1,12 +1,10 @@
 using MechControl.Application.Interfaces;
-using MechControl.Domain.Attributes;
 using MechControl.Domain.Core.Abstractions;
 using MechControl.Domain.Features.MechShops;
 using Microsoft.AspNetCore.Http;
 
 namespace MechControl.Infrastructure.Session;
 
-[ScopedService(typeof(ICurrentMechShopProvider))]
 internal sealed class SessionInfoProvider(
     IHttpContextAccessor httpContextAccessor
 ) : ICurrentMechShopProvider

@@ -15,7 +15,6 @@ RUN dotnet restore "src/MechControl.Api/MechControl.Api.csproj"
 # Copy the rest of the project files
 COPY . .
 
-
 # Build the project
 RUN dotnet build "src/MechControl.Api/MechControl.Api.csproj" -c Release -o /app/build
 
@@ -29,6 +28,8 @@ WORKDIR /app
 
 # Copy the published files
 COPY --from=publish /app/publish .
+
+ENV ASPNETCORE_URLS=http://+:5678
 
 # Set the entry point
 ENTRYPOINT ["dotnet", "MechControl.Api.dll"]
