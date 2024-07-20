@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MechControl.Infrastructure;
@@ -20,6 +21,8 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        AddHealthCheck(services);
+
         services.AddDbContext<MechControlContext>(opt =>
         {
             opt.UseNpgsql(
@@ -41,6 +44,23 @@ public static class DependencyInjection
         AddKeyclockJwtAuth(services, configuration);
 
         return services;
+    }
+
+    private static void AddHealthCheck(IServiceCollection services)
+    {
+        var healthChecksBuilder = services.AddHealthChecks();
+
+        healthChecksBuilder.AddAsyncCheck("Database", async () =>
+        {
+            await using var context =
+                services.BuildServiceProvider().GetService<MechControlContext>();
+
+            return context is not null
+                ? HealthCheckResult.Healthy("Database is healthy")
+                : HealthCheckResult.Unhealthy("Database is unhealthy");
+        });
+
+        healthChecksBuilder.AddCheck("Self", () => HealthCheckResult.Healthy("Self is healthy"));
     }
 
     private static void AddKeyclockJwtAuth(

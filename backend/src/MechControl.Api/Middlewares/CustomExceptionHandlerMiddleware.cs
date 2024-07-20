@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MechControl.Application.Exceptions;
+﻿using MechControl.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MechControl.Api.Middlewares;
@@ -16,7 +15,7 @@ public class CustomExceptionHandlerMiddleware(
     {
         try
         {
-
+            await _next(context);
         }
         catch (Exception ex)
         {
@@ -32,8 +31,9 @@ public class CustomExceptionHandlerMiddleware(
                 Detail = details.Detail,
                 Instance = context.TraceIdentifier
             };
-            if(details.Errors is not null) problemDetails.Extensions["errors"] = details.Errors;
-            
+            if (details.Errors is not null)
+                problemDetails.Extensions["errors"] = details.Errors;
+
             context.Response.StatusCode = problemDetails.Status.Value;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }

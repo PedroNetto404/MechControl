@@ -14,8 +14,8 @@ builder
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
-var app = builder.Build(); 
+var app = builder.Build();
 
 app.AddPipeline();
 
-await app.RunAsync();
+app.Run();

@@ -23,8 +23,8 @@ services:
       DB_DATABASE: mechcontrol
       DB_USER: mechcontrol-admin
       DB_PASSWORD: mechcontrol-admin161829
-      KEYCLOAK_USER: mechcontrol-admin
-      KEYCLOAK_PASSWORD: mechcontrol-admin161829
+      KEYCLOAK_ADMIN: mechcontrol-admin
+      KEYCLOAK_ADMIN_PASSWORD: mechcontrol-admin161829
     ports:
       - "8080:8080"
     depends_on:

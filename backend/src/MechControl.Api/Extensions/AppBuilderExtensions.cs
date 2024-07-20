@@ -14,9 +14,26 @@ public static class AppBuilderExtensions
 
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger(config =>
+            {
+                config.RouteTemplate = "api-docs/{documentName}/swagger.json";
+            });
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/api-docs/v1/swagger.json", "MechControl API V1");
+                config.RoutePrefix = "api-docs";
+                config.DisplayRequestDuration();
+                config.EnableDeepLinking();
+            });
         }
+        else
+        {
+            app.UseHsts();
+            app.UseHttpsRedirection();
+        }
+
+        app.UseHealthChecks("/health");
 
         app.UseRouting();
 
@@ -25,7 +42,6 @@ public static class AppBuilderExtensions
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseHttpsRedirection();
         app.MapControllers();
     }
 }

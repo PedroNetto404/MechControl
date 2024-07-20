@@ -1,4 +1,7 @@
-﻿namespace MechControl.Api;
+﻿using MechControl.Api.Controllers;
+using Microsoft.OpenApi.Models;
+
+namespace MechControl.Api;
 
 public static class DepedencyInjection
 {
@@ -9,8 +12,17 @@ public static class DepedencyInjection
         services.AddEndpointsApiExplorer();
         services.AddControllers();
         services.AddHttpContextAccessor();
-        services.AddSwaggerGen();
-      
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc($"v1", new OpenApiInfo { Title = "MechControl.Api", Version = "v1", Contact = new OpenApiContact { Name = "Pedro Netto", Email = "pedronetto31415@gmail.com" } });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+            });
+        });
+
+
         services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = configuration.GetConnectionString("Redis");

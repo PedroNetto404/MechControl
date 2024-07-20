@@ -9,20 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace MechControl.Api.Controllers.Customer;
 
 [Authorize]
-[ApiVersion(ApiVersion.V1)]
-[Route("api/v{version:apiVersion}/customers")]
+[Route("api/v1/customers")]
 public sealed class CustomerController(ISender sender) :
 	Controller(sender)
 {
 	[HttpGet("{id:guid}")]
-	public Task<IActionResult> GetAsync(Guid id) =>
+	public Task<IActionResult> GetAsync([FromRoute(Name = "id")] Guid id) =>
 		HandleResult(
-		_sender.Send(new GetCustomerByIdQuery(id))
-  );
+		_sender.Send(new GetCustomerByIdQuery(id)));
 
 
 	[HttpGet]
-	public Task<IActionResult> GetAsync(GetAllCustomersRequest request) =>
+	public Task<IActionResult> GetAsync([FromQuery] GetAllCustomersRequest request) =>
 	  HandleResult(
 		  _sender.Send(new GetAllCustomersQuery(
 			request.Offset,
