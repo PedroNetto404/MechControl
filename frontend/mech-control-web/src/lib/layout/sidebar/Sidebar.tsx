@@ -1,77 +1,52 @@
-import { useMediaQuery, Box, Drawer } from "@mui/material";
-import Logo from "../shared/logo/Logo";
-import SidebarItems from "./SidebarItems";
-import { Upgrade } from "./Updrade";
+"use client";
 
-interface ItemType {
-  isMobileSidebarOpen: boolean;
-  onSidebarClose: (event: React.MouseEvent<HTMLElement>) => void;
+import {
+  AppBar,
+  Toolbar,
+  Drawer,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import SidebarItems from "./SidebarItems";
+import { useState } from "react";
+import { Menu, ChevronLeft } from "@mui/icons-material";
+
+type SidebarProps = {
+  closeSidebar: () => void;
   isSidebarOpen: boolean;
-}
+};
 
 const Sidebar = ({
-  isMobileSidebarOpen,
-  onSidebarClose,
   isSidebarOpen,
-}: ItemType) => {
-  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
-  const sidebarWidth = "270px";
-
-  if (lgUp) {
-    return (
-      <Box
-        sx={{
-          width: sidebarWidth,
-          flexShrink: 0,
-        }}
-      >
+  closeSidebar
+}: SidebarProps) => {
+  const sidebarWidth = 270;
+  return (
+    <>
+      {isSidebarOpen && (
         <Drawer
-          anchor="left"
-          open={isSidebarOpen}
-          variant="permanent"
-          PaperProps={{
-            sx: {
+          sx={{
+            width: sidebarWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
               width: sidebarWidth,
               boxSizing: "border-box",
             },
           }}
+          open={isSidebarOpen}
+          anchor="left"
+          variant="persistent"
         >
-          <Box
-            sx={{
-              height: "100%",
-            }}
-          >
-            <Box px={3}>
-              <Logo />
-            </Box>
-            <Box>
-              <SidebarItems />
-            </Box>
-          </Box>
+          <Stack direction="row" justifyContent="flex-end">
+            <IconButton onClick={closeSidebar}>
+              <ChevronLeft />
+            </IconButton>
+          </Stack>
+          <SidebarItems />
         </Drawer>
-      </Box>
-    );
-  }
-
-  return (
-    <Drawer
-      anchor="left"
-      open={isMobileSidebarOpen}
-      onClose={onSidebarClose}
-      variant="temporary"
-      PaperProps={{
-        sx: {
-          width: sidebarWidth,
-          boxShadow: (theme) => theme.shadows[8],
-        },
-      }}
-    >
-      <Box px={2}>
-        <Logo />
-      </Box>
-      <SidebarItems />
-      <Upgrade />
-    </Drawer>
+      )}
+    </>
   );
 };
 

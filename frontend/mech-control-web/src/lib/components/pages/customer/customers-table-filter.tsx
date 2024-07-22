@@ -2,12 +2,7 @@
 
 import { Button, Checkbox, Stack, TextField } from "@mui/material";
 import { CustomerType } from "@/types/enums/customer-type";
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExportIcon from "@mui/icons-material/Download";
 import { useState } from "react";
@@ -42,65 +37,61 @@ export const CustomersTableFilter: React.FC<CustomersTableFilterProps> = ({
   const [showCorporateCustomer, setShowCorporateCustomer] = useState(true);
 
   return (
-    <Accordion
-      elevation={0}
-      defaultExpanded
+    <Stack
       sx={{
-        ".MuiAccordionSummary-root, .MuiAccordionDetails-root": {
-          padding: 0,
-          margin: 0,
-          width: "100%",
-        },
+        paddingBottom: 2,
       }}
     >
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography fontSize={18} fontWeight={"bold"}>
+      <Stack direction="row" justifyContent={"space-between"}>
+        <Typography fontSize={18} fontWeight={"bold"} py={2}>
           Filtros
         </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Stack direction="row" gap={2} justifyContent="space-between">
-          <TextField
-            sx={{
-              width: "60%",
-            }}
-            fullWidth
-            label="Pesquise pelo nome, telefone, cpf/cnpj, etc"
-            onChange={(e) => onSearchTextChange(e.target.value)}
-          />
-          <Stack width="40%" direction="row" justifyContent="space-between" gap={2}>
-            <Typography fontWeight="bold">Tipo de Cliente</Typography>
-            <Stack direction="row" alignItems="start">
-              <CustomerTypeCheck
-                onClick={() => {
-                  const show = !showIndividualCustomer;
-                  onCustomerTypeChange(CustomerType.individual, show);
-                  setShowIndividualCustomer(show);
-                }}
-                checked={showIndividualCustomer}
-                label="Pessoa Física"
-              />
-              <CustomerTypeCheck
-                onClick={() => {
-                  const show = !showCorporateCustomer;
-                  onCustomerTypeChange(CustomerType.corporate, show);
-                  setShowCorporateCustomer(show);
-                }}
-                checked={showCorporateCustomer}
-                label="Pessoa Jurídica"
-              />
-              <Button
-                variant="outlined"
-                sx={{
-                  marginRight: 2,
-                }}
-              >
-                <ExportIcon /> Exportar
-              </Button>
-            </Stack>
+        <Button
+          variant="outlined"
+          sx={{
+            marginRight: 2,
+          }}
+        >
+          <ExportIcon /> Exportar
+        </Button>
+      </Stack>
+      <Stack direction="column" gap={2} justifyContent="space-between">
+        <TextField
+          sx={{
+            width: "60%",
+          }}
+          fullWidth
+          label="Pesquise pelo nome, telefone, cpf/cnpj, etc"
+          onChange={(e) => onSearchTextChange(e.target.value)}
+        />
+        <Stack
+          width="40%"
+          direction="row"
+          justifyContent="space-between"
+          gap={2}
+        >
+          <Stack direction="row" alignItems="start">
+            <CustomerTypeCheck
+              onClick={() => {
+                const show = !showIndividualCustomer;
+                onCustomerTypeChange(CustomerType.individual, show);
+                setShowIndividualCustomer(show);
+              }}
+              checked={showIndividualCustomer}
+              label="Pessoa Física"
+            />
+            <CustomerTypeCheck
+              onClick={() => {
+                const show = !showCorporateCustomer;
+                onCustomerTypeChange(CustomerType.corporate, show);
+                setShowCorporateCustomer(show);
+              }}
+              checked={showCorporateCustomer}
+              label="Pessoa Jurídica"
+            />
           </Stack>
         </Stack>
-      </AccordionDetails>
-    </Accordion>
+      </Stack>
+    </Stack>
   );
 };

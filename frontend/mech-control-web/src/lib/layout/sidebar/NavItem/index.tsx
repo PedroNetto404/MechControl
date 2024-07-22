@@ -1,5 +1,4 @@
 import React from "react";
-// mui imports
 import {
   ListItemIcon,
   ListItem,
@@ -25,7 +24,6 @@ type NavGroup = {
 interface ItemType {
   item: NavGroup;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
-  hideMenu?: any;
   level?: number | any;
   pathDirect: string;
 }

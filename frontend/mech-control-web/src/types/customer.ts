@@ -1,4 +1,3 @@
-import { String } from "lodash";
 import { CustomerType } from "./enums/customer-type";
 
 export interface Customer {

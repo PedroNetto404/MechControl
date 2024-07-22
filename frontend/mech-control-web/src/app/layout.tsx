@@ -1,25 +1,14 @@
-'use client'
-
-import {
-  ThemeProvider,
-  CssBaseline,
-} from "@mui/material";
 import React from "react";
-import { baselightTheme } from "@/utils/theme/DefaultColors";
+import { CustomThemeProvider } from "@/lib/contexts/custom-theme-context";
 
-export default function PageLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const PageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="pt">
       <body>
-        <ThemeProvider theme={baselightTheme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <CustomThemeProvider>{children}</CustomThemeProvider>
       </body>
     </html>
   );
-}
+};
+
+export default PageLayout;

@@ -1,17 +1,20 @@
 import {
-  IconAperture,
-  IconCopy,
   IconLayoutDashboard,
-  IconLogin,
-  IconMoodHappy,
-  IconTypography,
-  IconUserPlus,
   IconCar,
 } from "@tabler/icons-react";
+import {
+  Person as IconPerson,
+} from "@mui/icons-material";
 
 import { uniqueId } from "lodash";
 
 const ManagementMenuitems = [
+  {
+    id: uniqueId(),
+    title: 'Relatórios',
+    icon: IconLayoutDashboard,
+    href: '/pages/dashboard',
+  },
   {
     navlabel: true,
     subheader: "Gerencial",
@@ -19,7 +22,7 @@ const ManagementMenuitems = [
   {
     id: uniqueId(),
     title: 'Clientes',
-    icon: IconLayoutDashboard,
+    icon: IconPerson,
     href: '/pages/customers',
   },
   {

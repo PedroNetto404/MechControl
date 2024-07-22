@@ -25,8 +25,10 @@ import {
   Add as PlusIcon,
   Person as CustomerIcon,
 } from "@mui/icons-material";
+import CreateCustomerDialog from "@/lib/components/pages/customer/create-customer-dialog";
 
 const Page: React.FC = () => {
+  const [createCustomerModalOpen, setCreateCustomerModalOpen] = useState(false);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,6 @@ const Page: React.FC = () => {
   const [selectedCustomerTypes, setSelectedCustomerTypes] = useState<
     CustomerType[]
   >([CustomerType.individual, CustomerType.corporate]);
-  const [filterExpanded, setFilterExpanded] = useState(true);
   const router = useRouter();
 
   const customerResource = useMemo(
@@ -90,43 +91,56 @@ const Page: React.FC = () => {
   };
 
   return (
-    <PageContainer title="Clientes" description="Lista de clientes">
-      {loading ? (
-        <Loading />
-      ) : (
-        <Stack direction="column">
-          <Stack direction="row" justifyContent="space-between"
-            sx={{
-              paddingBottom: '10px'
-            }}
-          >
-            <Typography variant="h3">Clientes</Typography>
-            <Button variant="contained">
-              <PlusIcon /> Cadastrar cliente
-            </Button>
+    <>
+      <PageContainer title="Clientes" description="Lista de clientes">
+        {loading ? (
+          <Loading />
+        ) : (
+          <Stack direction="column">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{
+                paddingBottom: "20px",
+              }}
+            >
+              <Typography variant="h4">Clientes</Typography>
+              <Button
+                variant="contained"
+                onClick={() => setCreateCustomerModalOpen(true)}
+              >
+                <PlusIcon /> Cadastrar cliente
+              </Button>
+            </Stack>
+            <Card>
+              <CardContent>
+                <Stack>
+                  <CustomersTableFilter
+                    onSearchTextChange={(searchText) =>
+                      setSearchText(searchText)
+                    }
+                    onCustomerTypeChange={onSelectCustomerType}
+                  />
+                  <CustomersTable
+                    customers={customersToShow}
+                    totalCount={totalCount}
+                    onPaginationChange={(page, pageSize) => {
+                      setCurrentFetchNumber(pageSize);
+                      setCurrentOffset(page * pageSize - 1);
+                    }}
+                    onCustomerClick={onCustomerClick}
+                  />
+                </Stack>
+              </CardContent>
+            </Card>
           </Stack>
-          <Card>
-            <CardContent>
-              <Stack>
-                <CustomersTableFilter
-                  onSearchTextChange={(searchText) => setSearchText(searchText)}
-                  onCustomerTypeChange={onSelectCustomerType}
-                />
-                <CustomersTable
-                  customers={customersToShow}
-                  totalCount={totalCount}
-                  onPaginationChange={(page, pageSize) => {
-                    setCurrentFetchNumber(pageSize);
-                    setCurrentOffset(page * pageSize - 1);
-                  }}
-                  onCustomerClick={onCustomerClick}
-                />
-              </Stack>
-            </CardContent>
-          </Card>
-        </Stack>
-      )}
-    </PageContainer>
+        )}
+      </PageContainer>
+      <CreateCustomerDialog
+        open={createCustomerModalOpen}
+        handleClose={() => setCreateCustomerModalOpen(false)}
+      />
+    </>
   );
 };
 
