@@ -16,27 +16,33 @@ public sealed class User : AggregateRoot<UserId>
 {
     public Email Email { get; private set; }
 
-    public string IdentityId { get; private set; }
+    public string HashedPassword { get; set; }
 
-    private User(
-        Email email,
-        string identityId)
+    public DateTime CreatedOnUtc { get; } = DateTime.UtcNow;
+
+    public DateTime ModifiedOnUtc { get; private set; } = DateTime.UtcNow;
+
+    public DateTime? DeletedOnUtc { get; private set; }
+
+
+    private User(Email email, string hashedPassword)
     {
         Email = email;
-        IdentityId = identityId;
+        HashedPassword = hashedPassword;
     }
 
     public static User New(
         Email email,
-        string identityId)
+        string hashedPassword)
     {
-        var user = new User(email, identityId);
+        var user = new User(email, hashedPassword);
         user.RaiseDomainEvent(new UserCreated(user.Id));
 
         return user;
     }
 
 #pragma warning disable CS0628 // New protected member declared in sealed type
+
 
     protected User() { }
 #pragma warning restore CS0628 // New protected member declared in sealed type

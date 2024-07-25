@@ -28,7 +28,7 @@ public sealed class Name : ValueObject<Name>
         return Result.Ok(new Name(name));
     }
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Fullname;
     }

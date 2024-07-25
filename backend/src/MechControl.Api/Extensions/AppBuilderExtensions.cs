@@ -4,13 +4,9 @@ namespace MechControl.Api.Extensions;
 
 public static class AppBuilderExtensions
 {
-    public static void UseCustomExceptionHandler(
-        this IApplicationBuilder app) =>
-        app.UseMiddleware<CustomExceptionHandlerMiddleware>();
-
-    public static void AddPipeline(this WebApplication app)
+    public static WebApplication AddPipeline(this WebApplication app)
     {
-        app.UseCustomExceptionHandler();
+        app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 
         if (app.Environment.IsDevelopment())
         {
@@ -43,5 +39,7 @@ public static class AppBuilderExtensions
         app.UseAuthorization();
 
         app.MapControllers();
+
+        return app;
     }
 }

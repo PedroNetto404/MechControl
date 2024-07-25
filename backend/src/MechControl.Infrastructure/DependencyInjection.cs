@@ -1,9 +1,11 @@
-﻿using MechControl.Application.Abstractions;
+﻿using System.Text;
+using MechControl.Application.Abstractions;
 using MechControl.Application.Interfaces;
 using MechControl.Domain.Core.Abstractions;
-using MechControl.Infrastructure.Authentication;
 using MechControl.Infrastructure.Persistence;
 using MechControl.Infrastructure.Persistence.Interceptors;
+using MechControl.Infrastructure.Security.Models;
+using MechControl.Infrastructure.Security.Services;
 using MechControl.Infrastructure.Session;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -31,19 +33,46 @@ public static class DependencyInjection
             );
         });
 
-        services.AddOptions<KeycloakOptions>()
-                .Bind(configuration.GetSection(KeycloakOptions.Key))
-                 .ValidateDataAnnotations();
-
         services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddTransient<DomainEventsInterceptor>();
         services.AddScoped<ICurrentMechShopProvider, SessionInfoProvider>();
-        services.AddScoped<IAuthenticationService, KeycloakAuthenticationService>();
+        services.AddScoped<IAuthenticationService, AuthService>();
+        services.AddScoped<IAuthTokenGenerator, JwtAuthTokenGenerator>();
+        services.AddScoped<IPasswordHasher, SHA256PasswordHasher>();
 
-        AddKeyclockJwtAuth(services, configuration);
+        AddJwtAuth(services, configuration);
 
         return services;
+    }
+
+    private static void AddJwtAuth(IServiceCollection services, IConfiguration configuration)
+    {
+        services
+            .AddOptions<JwtOptions>()
+            .Bind(configuration.GetSection(JwtOptions.SectionName))
+            .ValidateDataAnnotations();
+
+        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ??
+            throw new InvalidOperationException($"{JwtOptions.SectionName} not found in configuration");
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtOptions.Secret)),
+                    ValidateIssuerSigningKey = true,
+                };
+            });
     }
 
     private static void AddHealthCheck(IServiceCollection services)
@@ -63,45 +92,9 @@ public static class DependencyInjection
         healthChecksBuilder.AddCheck("Self", () => HealthCheckResult.Healthy("Self is healthy"));
     }
 
-    private static void AddKeyclockJwtAuth(
-        IServiceCollection services,
-        IConfiguration config)
+    public static WebApplication ApplyMigrations(this WebApplication app)
     {
-        services.AddAuthentication(opt =>
-        {
-            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(opt =>
-        {
-            var keycloakOptions =
-                config.GetSection(KeycloakOptions.Key)
-                      .Get<KeycloakOptions>() ?? throw new ArgumentNullException(nameof(KeycloakOptions));
-
-            opt.Authority = keycloakOptions.Authority;
-            opt.Audience = keycloakOptions.ClientId;
-            opt.RequireHttpsMetadata = false;
-
-            opt.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = keycloakOptions.Authority,
-                ValidateAudience = true,
-                ValidAudience = keycloakOptions.ClientId,
-                ValidateLifetime = true
-            };
-        });
-
-        services.AddAuthorization();
-
-        services.AddHttpClient<IAuthenticationService, KeycloakAuthenticationService>();
-    }
-
-    public static void ApplyMigrations(this IApplicationBuilder app)
-    {
-        using var scope =
-            app
-                .ApplicationServices
-                .CreateScope();
+        using var scope = app.Services.CreateScope();
 
         var context =
             scope
@@ -111,5 +104,7 @@ public static class DependencyInjection
         context
             .Database
             .Migrate();
+
+        return app;
     }
 }

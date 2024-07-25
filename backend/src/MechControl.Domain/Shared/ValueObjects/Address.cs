@@ -65,7 +65,7 @@ public sealed class Address : ValueObject<Address>
         if (string.IsNullOrEmpty(stateCode) || stateCode.Length != 2)
             return new Error("invalid_address", "State Code is required");
 
-        return Result.Ok<Address>(new(
+        return Result.Ok(new Address(
             street,
             number,
             neighborhood,
@@ -78,9 +78,9 @@ public sealed class Address : ValueObject<Address>
     }
 
     public override string ToString() =>
-    $"{ZipCode}, {Street}, {Number}, {Neighborhood}, {City}, {StateCode}, {CountryCode}; {Complement ?? string.Empty}; {Reference ?? string.Empty}";
+        $"{ZipCode}, {Street}, {Number}, {Neighborhood}, {City}, {StateCode}, {CountryCode}; {Complement ?? string.Empty}; {Reference ?? string.Empty}";
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Street;
         yield return Number;

@@ -18,7 +18,7 @@ public sealed class CustomerId : StrongId
     }
 }
 
-public abstract class Customer : AggregateRoot<CustomerId>, IAuditableEntity
+public abstract class Customer : AggregateRoot<CustomerId>
 {
     public Name Name { get; private set; }
     public Email Email { get; private set; }
@@ -26,11 +26,8 @@ public abstract class Customer : AggregateRoot<CustomerId>, IAuditableEntity
     public Address Address { get; private set; }
     public Document Document { get; private set; }
     public MechShopId MechShopId { get; private set; }
-
     public DateTime CreatedOnUtc { get; } = DateTime.UtcNow;
-
     public DateTime ModifiedOnUtc { get; private set; } = DateTime.UtcNow;
-
     public DateTime? DeletedOnUtc { get; private set; }
 
 
@@ -56,19 +53,17 @@ public abstract class Customer : AggregateRoot<CustomerId>, IAuditableEntity
         MechShopId = mechShopId;
     }
 
-    public void Delete() => (DeletedOnUtc, ModifiedOnUtc) = (DateTime.UtcNow, DateTime.UtcNow);
-
     public static Result<Customer> Create(
         Name name,
         Email email,
         Phone phone,
         Address address,
-         MechShopId mechShopId,
-         CustomerType type,
-         Document document,
+        MechShopId mechShopId,
+        CustomerType type,
+        Document document,
         bool? isMei = null,
         DateOnly? birthDate = null
-       )
+    )
     {
         Customer customer;
         if (type == CustomerType.Individual)

@@ -23,7 +23,7 @@ public sealed partial class Email : ValueObject<Email>
         return Result.Ok(new Email(value));
     }
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }

@@ -5,17 +5,16 @@ using MechControl.Application;
 using MechControl.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder
     .Services
-    .AddPresentation(builder.Configuration)
+    .AddPresentation()
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
-var app = builder.Build();
-
-app.AddPipeline();
-
-app.Run();
+await builder
+    .Build()
+    .ApplyMigrations()
+    .AddPipeline()
+    .RunAsync();

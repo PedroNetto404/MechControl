@@ -22,7 +22,7 @@ public sealed class Cpf : Document
         return new Cpf(value);
     }
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }

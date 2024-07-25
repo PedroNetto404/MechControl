@@ -6,15 +6,22 @@ namespace MechControl.Api;
 public static class DepedencyInjection
 {
     public static IServiceCollection AddPresentation(
-        this IServiceCollection services,
-        IConfiguration configuration)
+        this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddControllers();
         services.AddHttpContextAccessor();
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc($"v1", new OpenApiInfo { Title = "MechControl.Api", Version = "v1", Contact = new OpenApiContact { Name = "Pedro Netto", Email = "pedronetto31415@gmail.com" } });
+            c.SwaggerDoc($"v1", new OpenApiInfo
+            {
+                Title = "MechControl.Api",
+                Version = "v1",
+                Contact = new OpenApiContact
+                {
+                    Name = "Pedro Netto", Email = "pedronetto31415@gmail.com"
+                }
+            });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -22,12 +29,7 @@ public static class DepedencyInjection
             });
         });
 
-
-        services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = configuration.GetConnectionString("Redis");
-            options.InstanceName = "MechControl";
-        });
+        services.AddDistributedMemoryCache();
 
         services.AddSession(options =>
         {

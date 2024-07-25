@@ -6,10 +6,10 @@ namespace MechControl.Application.Features.Users.Commands.Signin;
 
 public sealed class SigninCommandHandler(
     IAuthenticationService authenticationService
-) : ICommandHandler<SigninCommand>
+) : ICommandHandler<SigninCommand, AuthToken>
 {
 
-    public Task<Result> Handle(
+    public Task<Result<AuthToken>> Handle(
         SigninCommand request, 
         CancellationToken cancellationToken) =>
         authenticationService.SigninAsync(

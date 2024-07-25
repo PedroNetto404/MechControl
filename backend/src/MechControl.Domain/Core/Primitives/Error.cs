@@ -4,10 +4,10 @@ namespace MechControl.Domain.Core.Primitives;
 /// <summary>
 /// Represents an error.
 /// </summary>
-public class Error(string Code, string Message) : ValueObject<Error>
+public class Error(string code, string message) : ValueObject<Error>
 {
-    public string Code { get; } = Code;
-    public string Message { get; } = Message;
+    public string Code { get; } = code;
+    public string Message { get; } = message;
 
     public static Error Unknow() => new("unknow", "An unknow error has occurred.");
 
@@ -15,7 +15,7 @@ public class Error(string Code, string Message) : ValueObject<Error>
 
     public static Error InvalidOperation(string message) => new("invalid_operation", message);
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Code;
         yield return Message;

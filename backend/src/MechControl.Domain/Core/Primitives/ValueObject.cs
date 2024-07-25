@@ -4,24 +4,25 @@ namespace MechControl.Domain.Core.Primitives;
 /// Represents a value object. <see href="https://martinfowler.com/bliki/ValueObject.html">Value Object</see>
 /// </summary>
 public abstract class ValueObject<T> :
-	IEquatable<T>
-	where T : ValueObject<T>
+    IEquatable<T>
+    where T : ValueObject<T>
 {
-	public abstract IEnumerable<object> GetEqualityComponents();
+    protected abstract IEnumerable<object> GetEqualityComponents();
 
-	public bool Equals(T? other)
-	{
-		if (other is null) return false;
-		if (ReferenceEquals(this, other)) return true;
-		return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-	}
-	public override bool Equals(object? obj) => obj is T other && Equals(other);
-	public override int GetHashCode() => this.GetEqualityComponents()
-		.Aggregate(1, (current, obj) => current * 23 + (obj?.GetHashCode() ?? 0));
+    public bool Equals(T? other)
+    {
+        if (other is null) return false;
+        return ReferenceEquals(this, other) || GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+    }
 
-	public static bool operator ==(ValueObject<T>? a, ValueObject<T>? b) =>
-		ReferenceEquals(a, b) || a?.Equals(b) == true;
+    public override bool Equals(object? obj) => obj is T other && Equals(other);
 
-	public static bool operator !=(ValueObject<T>? a, ValueObject<T>? b) => 
-		!(a == b);
+    public override int GetHashCode() => GetEqualityComponents()
+        .Aggregate(1, (current, obj) => current * 23 + (obj?.GetHashCode() ?? 0));
+
+    public static bool operator ==(ValueObject<T>? a, ValueObject<T>? b) =>
+        ReferenceEquals(a, b) || a?.Equals(b) == true;
+
+    public static bool operator !=(ValueObject<T>? a, ValueObject<T>? b) =>
+        !(a == b);
 }

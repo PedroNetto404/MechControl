@@ -8,18 +8,15 @@ public class CustomExceptionHandlerMiddleware(
     ILogger<CustomExceptionHandlerMiddleware> logger
 )
 {
-    private readonly RequestDelegate _next = next;
-    private readonly ILogger<CustomExceptionHandlerMiddleware> _logger = logger;
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Expected occurred: {message}", ex.Message);
+            logger.LogError(ex, "Expected occurred: {message}", ex.Message);
 
             var details = GetExceptionDetails(ex);
 
@@ -65,5 +62,3 @@ public class CustomExceptionHandlerMiddleware(
         string Detail,
         IEnumerable<object>? Errors);
 }
-
-

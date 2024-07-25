@@ -23,7 +23,7 @@ public abstract class StrongId : ValueObject<StrongId>
             throw new InvalidOperationException(
                 $"Type {type.Name} does not have a private constructor that accepts a Guid.");
 
-    public sealed override IEnumerable<object> GetEqualityComponents()
+    protected sealed override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }

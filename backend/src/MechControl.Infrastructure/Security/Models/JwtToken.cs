@@ -1,16 +1,8 @@
 using System.Text.Json.Serialization;
-using MechControl.Domain.Core.Primitives.Result;
 
-namespace MechControl.Application.Interfaces;
-public interface IAuthenticationService
-{
-    Task<Result<AuthToken>> SigninAsync(
-        string email, 
-        string password, 
-        CancellationToken cancellationToken = default);
-}
+namespace MechControl.Infrastructure.Security.Models;
 
-public sealed record AuthToken
+public sealed record JwtToken
 {
     [JsonPropertyName("access_token")]
     public string AccessToken { get; init; }

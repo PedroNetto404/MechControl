@@ -29,7 +29,7 @@ public sealed partial class Phone : ValueObject<Phone>
 
     public override string ToString() => $"({Ddd}) {Number[..1]} {Number[1..5]}-{Number[5..]}";
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }

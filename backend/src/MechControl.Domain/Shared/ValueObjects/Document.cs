@@ -10,7 +10,7 @@ public abstract class Document : ValueObject<Document>
 
     protected Document(string value) => Value = value;
 
-    public override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<object> GetEqualityComponents()
 	{
 		yield return Value;
 	}
