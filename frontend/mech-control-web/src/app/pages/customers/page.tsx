@@ -7,12 +7,9 @@ import PageContainer from "@/lib/components/shared/PageContainer";
 import { HttpResource } from "@/services/http-resource";
 import { GetCustomersQuery } from "@/types/get-customers-query";
 import {
-  Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
-  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -21,9 +18,7 @@ import { CustomerType } from "@/types/enums/customer-type";
 import Loading from "@/app/loading";
 import { useRouter } from "next/navigation";
 import {
-  Download as ExportIcon,
   Add as PlusIcon,
-  Person as CustomerIcon,
 } from "@mui/icons-material";
 import CreateCustomerDialog from "@/lib/components/pages/customer/create-customer-dialog";
 
